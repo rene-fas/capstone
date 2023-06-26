@@ -1,21 +1,46 @@
+// pages/index.js
 import React, { useState } from "react";
-import OutcropDetailsPage from "./OutcropDetailsPage";
+import OutcropDetailsPage from "../components/OutcropDetailsPage";
 
-const IndexPage = () => {
-  const [submittedData, setSubmittedData] = useState([]);
+const Home = () => {
+  const [formState, setFormState] = useState({
+    location: "",
+    notes: "",
+    submittedData: [],
+  });
 
-  const handleFormSubmit = (data) => {
-    setSubmittedData([...submittedData, data]);
+  const handleFormSubmit = () => {
+    const { location, notes } = formState;
+    const newData = {
+      location,
+      notes,
+    };
+
+    setFormState((prevState) => ({
+      ...prevState,
+      submittedData: [...prevState.submittedData, newData],
+      location: "",
+      notes: "",
+    }));
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   return (
     <>
       <OutcropDetailsPage
-        onSubmit={handleFormSubmit}
-        submittedData={submittedData}
+        formState={formState}
+        onFormSubmit={handleFormSubmit}
+        onInputChange={handleInputChange}
       />
     </>
   );
 };
 
-export default IndexPage;
+export default Home;
