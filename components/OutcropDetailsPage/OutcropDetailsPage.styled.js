@@ -4,8 +4,9 @@ export const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
+  padding-top: 100px;
+  display: grid;
+  grid-template-rows: auto 1fr;
   align-items: center;
 `;
 
@@ -22,7 +23,7 @@ export const InputRow = styled.div`
 `;
 
 export const FormField = styled.div`
-  flex-basis: calc(50% - 10px); /* Adjust the width as needed */
+  flex-basis: calc(50% - 10px);
 `;
 
 export const MultilineField = styled.div`
@@ -75,4 +76,13 @@ export const ListItem = styled.li`
 
 export const Headline = styled.h1`
   text-align: center;
+`;
+
+export const Header = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 1;
 `;

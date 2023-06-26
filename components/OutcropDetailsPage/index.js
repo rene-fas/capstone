@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   Headline,
+  Header,
 } from "./OutcropDetailsPage.styled";
 
 const OutcropDetailsPage = ({
@@ -29,9 +30,9 @@ const OutcropDetailsPage = ({
 
   return (
     <>
-      <header>
+      <Header>
         <Headline>Aufschluss 1 Titel</Headline>
-      </header>
+      </Header>
       <Container>
         <Form onSubmit={onFormSubmit}>
           {dataKeys.map((key) => (
