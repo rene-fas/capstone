@@ -39,14 +39,7 @@ const OutcropDetailsPage = ({
       <Container>
         <Form onSubmit={onFormSubmit}>
           {dataKeys.map((key) => (
-            <FormField
-              className={
-                key === "allgemeines" || key === "interpretation"
-                  ? "multiline"
-                  : ""
-              }
-              key={key}
-            >
+            <FormField key={key}>
               <label htmlFor={key}>{capitalizeFirstLetter(key)}:</label>
               {key === "allgemeines" || key === "interpretation" ? (
                 <TextArea
