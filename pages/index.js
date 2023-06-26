@@ -1,42 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import useLocalStorageState from "use-local-storage-state";
 import OutcropDetailsPage from "../components/OutcropDetailsPage";
 
 const Home = () => {
-  const [formState, setFormState] = useState({
-    location: "",
-    notes: "",
-    submittedData: [],
+  const [submittedData, setSubmittedData] = useLocalStorageState(
+    "submittedData",
+    [] // Initialize with an empty array if it doesn't exist
+  );
+
+  const [formState, setFormState] = useLocalStorageState("formState", {
+    defaultValue: { location: "", notes: "" }, // Set defaultValue object
   });
 
-  // Load submitted data from local storage on component mount
-  useEffect(() => {
-    const storedData = localStorage.getItem("submittedData");
-    if (storedData) {
-      setFormState((prevState) => ({
-        ...prevState,
-        submittedData: JSON.parse(storedData),
-      }));
-    }
-  }, []);
-
-  const handleFormSubmit = () => {
-    const { location, notes } = formState;
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
     const newData = {
-      location,
-      notes,
+      location: formData.get("location"),
+      notes: formData.get("notes"),
     };
-
-    // Update submitted data and store in local storage
-    setFormState((prevState) => ({
-      ...prevState,
-      submittedData: [...prevState.submittedData, newData],
-      location: "",
-      notes: "",
-    }));
-    localStorage.setItem(
-      "submittedData",
-      JSON.stringify([...formState.submittedData, newData])
-    );
+    setSubmittedData((prevData) => {
+      if (prevData) {
+        return [...prevData, newData];
+      } else {
+        return [newData];
+      }
+    });
+    setFormState({ location: "", notes: "" });
   };
 
   const handleInputChange = (event) => {
@@ -53,6 +43,7 @@ const Home = () => {
         formState={formState}
         onFormSubmit={handleFormSubmit}
         onInputChange={handleInputChange}
+        submittedData={submittedData}
       />
     </>
   );
