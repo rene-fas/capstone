@@ -4,6 +4,7 @@ import { capitalizeFirstLetter } from "../../helper/functions";
 import {
   Container,
   Form,
+  FormField,
   Input,
   TextArea,
   Button,
@@ -38,12 +39,12 @@ const OutcropDetailsPage = ({
       <Container>
         <Form onSubmit={onFormSubmit}>
           {dataKeys.map((key) => (
-            <div
-              className={`form-field${
+            <FormField
+              className={
                 key === "allgemeines" || key === "interpretation"
-                  ? " multiline"
+                  ? "multiline"
                   : ""
-              }`}
+              }
               key={key}
             >
               <label htmlFor={key}>{capitalizeFirstLetter(key)}:</label>
@@ -64,7 +65,7 @@ const OutcropDetailsPage = ({
                   onChange={onInputChange}
                 />
               )}
-            </div>
+            </FormField>
           ))}
 
           <Button type="submit">Erstellen</Button>
