@@ -1,14 +1,13 @@
 import React from "react";
 import {
   Container,
-  Heading,
   Form,
-  Label,
   Input,
   TextArea,
   Button,
   List,
   ListItem,
+  Headline,
 } from "./OutcropDetailsPage.styled";
 
 const OutcropDetailsPage = ({
@@ -16,140 +15,82 @@ const OutcropDetailsPage = ({
   onFormSubmit,
   onInputChange,
   submittedData,
+  title,
 }) => {
-  const {
-    gesteinsart,
-    gesteinsklasse,
-    schichtung,
-    faltung,
-    mineralien,
-    allgemeines,
-    interpretation,
-  } = formState || {};
+  const dataKeys = [
+    "gesteinsart",
+    "gesteinsklasse",
+    "schichtung",
+    "faltung",
+    "mineralien",
+    "allgemeines",
+    "interpretation",
+  ];
 
   return (
     <>
+      <header>
+        <Headline>Aufschluss 1 Titel</Headline>
+      </header>
       <Container>
-        <header>
-          <Heading>Aufschluss 1 Tite</Heading>
-        </header>
-
         <Form onSubmit={onFormSubmit}>
-          <div>
-            <Label htmlFor="gesteinsart">Gesteinsart:</Label>
-            <Input
-              type="text"
-              id="gesteinsart"
-              name="gesteinsart"
-              value={gesteinsart || ""}
-              onChange={onInputChange}
-            />
-          </div>
+          {dataKeys.map((key) => (
+            <div
+              className={`form-field${
+                key === "allgemeines" || key === "interpretation"
+                  ? " multiline"
+                  : ""
+              }`}
+              key={key}
+            >
+              <label htmlFor={key}>{capitalizeFirstLetter(key)}:</label>
+              {key === "allgemeines" || key === "interpretation" ? (
+                <TextArea
+                  id={key}
+                  name={key}
+                  value={formState?.[key] || ""}
+                  onChange={onInputChange}
+                  rows={5}
+                />
+              ) : (
+                <Input
+                  type="text"
+                  id={key}
+                  name={key}
+                  value={formState?.[key] || ""}
+                  onChange={onInputChange}
+                />
+              )}
+            </div>
+          ))}
 
-          <div>
-            <Label htmlFor="gesteinsklasse">Gesteinsklasse:</Label>
-            <Input
-              type="text"
-              id="gesteinsklasse"
-              name="gesteinsklasse"
-              value={gesteinsklasse || ""}
-              onChange={onInputChange}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="schichtung">Schichtung:</Label>
-            <Input
-              type="text"
-              id="schichtung"
-              name="schichtung"
-              value={schichtung || ""}
-              onChange={onInputChange}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="faltung">Faltung:</Label>
-            <Input
-              type="text"
-              id="faltung"
-              name="faltung"
-              value={faltung || ""}
-              onChange={onInputChange}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="mineralien">Mineralien:</Label>
-            <Input
-              type="text"
-              id="mineralien"
-              name="mineralien"
-              value={mineralien || ""}
-              onChange={onInputChange}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="allgemeines">Allgemeines:</Label>
-            <Input
-              type="text"
-              id="allgemeines"
-              name="allgemeines"
-              value={allgemeines || ""}
-              onChange={onInputChange}
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="interpretation">Interpretation:</Label>
-            <Input
-              type="text"
-              id="interpretation"
-              name="interpretation"
-              value={interpretation || ""}
-              onChange={onInputChange}
-            />
-          </div>
-
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Erstellen</Button>
         </Form>
 
+        {/* Submitted data */}
         {submittedData && submittedData.length > 0 && (
-          <div>
-            <Heading>Submitted Data:</Heading>
-            <List>
-              {submittedData.map((data, index) => (
-                <ListItem key={index}>
-                  <p>
-                    <strong>Gesteinsart:</strong> {data.gesteinsart}
-                  </p>
-                  <p>
-                    <strong>Gesteinsklasse:</strong> {data.gesteinsklasse}
-                  </p>
-                  <p>
-                    <strong>Schichtung:</strong> {data.schichtung}
-                  </p>
-                  <p>
-                    <strong>Faltung:</strong> {data.faltung}
-                  </p>
-                  <p>
-                    <strong>Mineralien:</strong> {data.mineralien}
-                  </p>
-                  <p>
-                    <strong>Allgemeines:</strong> {data.allgemeines}
-                  </p>
-                  <p>
-                    <strong>Interpretation:</strong> {data.interpretation}
-                  </p>
-                </ListItem>
-              ))}
-            </List>
-          </div>
+          <List>
+            {submittedData.map((data, index) => (
+              <ListItem key={index}>
+                <List>
+                  {dataKeys.map((key) => (
+                    <ListItem key={key}>
+                      <strong>{capitalizeFirstLetter(key)}:</strong> {data[key]}
+                    </ListItem>
+                  ))}
+                </List>
+              </ListItem>
+            ))}
+          </List>
         )}
       </Container>
     </>
   );
 };
+
+// Helper function to capitalize the first letter of a string
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 export default OutcropDetailsPage;
