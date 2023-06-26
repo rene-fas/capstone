@@ -1,5 +1,4 @@
-// pages/index.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import OutcropDetailsPage from "../components/OutcropDetailsPage";
 
 const Home = () => {
@@ -9,6 +8,17 @@ const Home = () => {
     submittedData: [],
   });
 
+  // Load submitted data from local storage on component mount
+  useEffect(() => {
+    const storedData = localStorage.getItem("submittedData");
+    if (storedData) {
+      setFormState((prevState) => ({
+        ...prevState,
+        submittedData: JSON.parse(storedData),
+      }));
+    }
+  }, []);
+
   const handleFormSubmit = () => {
     const { location, notes } = formState;
     const newData = {
@@ -16,12 +26,17 @@ const Home = () => {
       notes,
     };
 
+    // Update submitted data and store in local storage
     setFormState((prevState) => ({
       ...prevState,
       submittedData: [...prevState.submittedData, newData],
       location: "",
       notes: "",
     }));
+    localStorage.setItem(
+      "submittedData",
+      JSON.stringify([...formState.submittedData, newData])
+    );
   };
 
   const handleInputChange = (event) => {
