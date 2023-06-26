@@ -1,7 +1,21 @@
-export default function HomePage() {
+import React, { useState } from "react";
+import OutcropDetailsPage from "./OutcropDetailsPage";
+
+const IndexPage = () => {
+  const [submittedData, setSubmittedData] = useState([]);
+
+  const handleFormSubmit = (data) => {
+    setSubmittedData([...submittedData, data]);
+  };
+
   return (
-    <div>
-      <h1>Hello from Next.js</h1>
-    </div>
+    <>
+      <OutcropDetailsPage
+        onSubmit={handleFormSubmit}
+        submittedData={submittedData}
+      />
+    </>
   );
-}
+};
+
+export default IndexPage;
