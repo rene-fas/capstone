@@ -1,4 +1,6 @@
 import React from "react";
+import { capitalizeFirstLetter } from "../../helper/functions";
+
 import {
   Container,
   Form,
@@ -88,10 +90,5 @@ const OutcropDetailsPage = ({
     </>
   );
 };
-
-// Helper function to capitalize the first letter of a string
-function capitalizeFirstLetter(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
 
 export default OutcropDetailsPage;
