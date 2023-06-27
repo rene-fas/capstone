@@ -8,9 +8,7 @@ const Outcrops = ({ outcrops }) => {
       <ul>
         {outcrops.map((outcrop, index) => (
           <li key={index}>
-            <Link href={`/outcrops/${index}`}>
-              <a>{outcrop.title}</a>
-            </Link>
+            <Link href={`/outcrops/${index}`}>{outcrop.title}</Link>
           </li>
         ))}
       </ul>

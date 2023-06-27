@@ -1,6 +1,7 @@
 import React from "react";
 import useLocalStorageState from "use-local-storage-state";
 import OutcropDetailsPage from "../components/OutcropDetailsPage";
+import Outcrops from "./outcrops";
 
 const Home = () => {
   const [submittedData, setSubmittedData] = useLocalStorageState(
@@ -9,6 +10,12 @@ const Home = () => {
   );
 
   const [formState, setFormState] = useLocalStorageState("formState", {});
+
+  const outcrops = [
+    { title: "Outcrop 1" },
+    { title: "Outcrop 2" },
+    { title: "Outcrop 3" },
+  ];
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -44,6 +51,7 @@ const Home = () => {
 
   return (
     <>
+      <Outcrops outcrops={outcrops} />
       <OutcropDetailsPage
         formState={formState}
         onFormSubmit={handleFormSubmit}

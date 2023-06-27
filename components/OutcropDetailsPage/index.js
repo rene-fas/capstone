@@ -1,5 +1,6 @@
 import React from "react";
 import { capitalizeFirstLetter } from "../../helper/functions";
+import Link from "next/link";
 
 import {
   Container,
@@ -34,7 +35,7 @@ const OutcropDetailsPage = ({
   return (
     <>
       <Header>
-        <Headline>Aufschluss 1 Titel</Headline>
+        <Headline>{title}</Headline>
       </Header>
       <Container>
         <Form onSubmit={onFormSubmit}>
@@ -80,6 +81,9 @@ const OutcropDetailsPage = ({
             ))}
           </List>
         )}
+        <Link href="/outcrops">
+          <Button>Back</Button>
+        </Link>
       </Container>
     </>
   );
