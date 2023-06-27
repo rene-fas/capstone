@@ -2,23 +2,22 @@ import React, { useState, useEffect } from "react";
 import { capitalizeFirstLetter } from "../../helper/functions";
 import { useRouter } from "next/router";
 
+import { Form, FormField, Input, TextArea } from "./OutcropDetailsPage.styled";
+
 import {
   Container,
-  Form,
-  FormField,
-  Input,
-  TextArea,
-  Button,
-  List,
-  ListItem,
   Headline,
   Header,
-} from "./OutcropDetailsPage.styled";
+  List,
+  ListItem,
+  Button,
+} from "../component.styled";
 
 const OutcropDetailsPage = () => {
   const router = useRouter();
   const { query } = router;
   const outcropId = query.id;
+  const outcropTitle = query.title;
 
   const handleBack = () => {
     router.push("/");
@@ -49,19 +48,6 @@ const OutcropDetailsPage = () => {
   };
 
   const [formState, setFormState] = useState({});
-  const [outcropTitle, setOutcropTitle] = useState("");
-
-  useEffect(() => {
-    const storedSubmittedData = getStoredSubmittedData();
-    if (
-      storedSubmittedData &&
-      storedSubmittedData[outcropId] &&
-      storedSubmittedData[outcropId].length > 0
-    ) {
-      const [firstData] = storedSubmittedData[outcropId];
-      setOutcropTitle(firstData?.title || "");
-    }
-  }, [outcropId]);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -145,7 +131,7 @@ const OutcropDetailsPage = () => {
               ))}
             </List>
           )}
-        <button onClick={handleBack}>Go Back</button>
+        <Button onClick={handleBack}>Go Back</Button>
       </Container>
     </>
   );
