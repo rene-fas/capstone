@@ -43,7 +43,7 @@ const OutcropListPage = () => {
               }}
               as={`/outcroplist/${fieldtripId}/outcrop/${outcrop.id}`}
             >
-              {outcrop.title}
+              <Button>{outcrop.title}</Button>
             </Link>
           </ListItem>
         ))}
