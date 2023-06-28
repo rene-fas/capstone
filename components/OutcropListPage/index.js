@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import {
   Container,
@@ -7,6 +8,7 @@ import {
   Header,
   List,
   ListItem,
+  Button,
 } from "../component.styled";
 
 const OutcropListPage = () => {
@@ -16,7 +18,12 @@ const OutcropListPage = () => {
     { id: 3, title: "Outcrop 3" },
     // Add more outcrop objects as needed
   ];
-
+  const router = useRouter();
+  const { query } = router;
+  const fieldtripId = query.fieldtripId;
+  const handleBack = () => {
+    router.back();
+  };
   return (
     <Container>
       <Header>
@@ -27,16 +34,21 @@ const OutcropListPage = () => {
           <ListItem key={outcrop.id}>
             <Link
               href={{
-                pathname: "/outcrop/[id]",
-                query: { id: outcrop.id, title: outcrop.title },
+                pathname: "/outcroplist/[fieldtripId]/outcrop/[outcropId]",
+                query: {
+                  outcropId: outcrop.id,
+                  title: outcrop.title,
+                  fieldtripId: fieldtripId,
+                },
               }}
-              as={`/outcrop/${outcrop.id}`}
+              as={`/outcroplist/${fieldtripId}/outcrop/${outcrop.id}`}
             >
               {outcrop.title}
             </Link>
           </ListItem>
         ))}
       </List>
+      <Button onClick={handleBack}>Go Back</Button>
     </Container>
   );
 };

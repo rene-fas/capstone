@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { capitalizeFirstLetter } from "../../helper/functions";
 import { useRouter } from "next/router";
 
@@ -16,11 +16,12 @@ import {
 const OutcropDetailsPage = () => {
   const router = useRouter();
   const { query } = router;
-  const outcropId = query.id;
+  const fieldTripId = query.fieldtripId;
+  const outcropId = query.outcropId;
   const outcropTitle = query.title;
-
+  console.log("QueryID", query);
   const handleBack = () => {
-    router.push("/");
+    router.back();
   };
 
   const dataKeys = [
@@ -59,10 +60,14 @@ const OutcropDetailsPage = () => {
     }
 
     const storedSubmittedData = getStoredSubmittedData();
-    const dataForOutcropId = storedSubmittedData[outcropId] || [];
+    const dataForFieldTrip = storedSubmittedData[fieldTripId] || {};
+    const dataForOutcropId = dataForFieldTrip[outcropId] || [];
     const updatedData = {
       ...storedSubmittedData,
-      [outcropId]: [...dataForOutcropId, newData],
+      [fieldTripId]: {
+        ...dataForFieldTrip,
+        [outcropId]: [...dataForOutcropId, newData],
+      },
     };
     setStoredSubmittedData(updatedData);
 
@@ -114,21 +119,24 @@ const OutcropDetailsPage = () => {
 
         {/* Submitted data */}
         {storedSubmittedData &&
-          storedSubmittedData[outcropId] &&
-          storedSubmittedData[outcropId].length > 0 && (
+          storedSubmittedData[fieldTripId] &&
+          storedSubmittedData[fieldTripId][outcropId] &&
+          storedSubmittedData[fieldTripId][outcropId].length > 0 && (
             <List>
-              {storedSubmittedData[outcropId].map((data, index) => (
-                <ListItem key={index}>
-                  <List>
-                    {dataKeys.map((key) => (
-                      <ListItem key={key}>
-                        <strong>{capitalizeFirstLetter(key)}:</strong>{" "}
-                        {data[key]}
-                      </ListItem>
-                    ))}
-                  </List>
-                </ListItem>
-              ))}
+              {storedSubmittedData[fieldTripId][outcropId].map(
+                (data, index) => (
+                  <ListItem key={index}>
+                    <List>
+                      {dataKeys.map((key) => (
+                        <ListItem key={key}>
+                          <strong>{capitalizeFirstLetter(key)}:</strong>{" "}
+                          {data[key]}
+                        </ListItem>
+                      ))}
+                    </List>
+                  </ListItem>
+                )
+              )}
             </List>
           )}
         <Button onClick={handleBack}>Go Back</Button>
