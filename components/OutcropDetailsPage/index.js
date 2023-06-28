@@ -1,26 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { capitalizeFirstLetter } from "../../helper/functions";
+import { useRouter } from "next/router";
+
+import { Form, FormField, Input, TextArea } from "./OutcropDetailsPage.styled";
 
 import {
   Container,
-  Form,
-  FormField,
-  Input,
-  TextArea,
-  Button,
-  List,
-  ListItem,
   Headline,
   Header,
-} from "./OutcropDetailsPage.styled";
+  List,
+  ListItem,
+  Button,
+} from "../component.styled";
 
-const OutcropDetailsPage = ({
-  formState,
-  onFormSubmit,
-  onInputChange,
-  submittedData,
-  title,
-}) => {
+const OutcropDetailsPage = () => {
+  const router = useRouter();
+  const { query } = router;
+  const outcropId = query.id;
+  const outcropTitle = query.title;
+
+  const handleBack = () => {
+    router.push("/");
+  };
+
   const dataKeys = [
     "gesteinsart",
     "gesteinsklasse",
@@ -31,13 +33,59 @@ const OutcropDetailsPage = ({
     "interpretation",
   ];
 
+  const getStoredSubmittedData = () => {
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("submittedData");
+      return storedData ? JSON.parse(storedData) : {};
+    }
+    return {};
+  };
+
+  const setStoredSubmittedData = (data) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("submittedData", JSON.stringify(data));
+    }
+  };
+
+  const [formState, setFormState] = useState({});
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const newData = {};
+
+    for (const key of dataKeys) {
+      newData[key] = formData.get(key);
+    }
+
+    const storedSubmittedData = getStoredSubmittedData();
+    const dataForOutcropId = storedSubmittedData[outcropId] || [];
+    const updatedData = {
+      ...storedSubmittedData,
+      [outcropId]: [...dataForOutcropId, newData],
+    };
+    setStoredSubmittedData(updatedData);
+
+    setFormState({});
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const storedSubmittedData = getStoredSubmittedData();
+
   return (
     <>
       <Header>
-        <Headline>Aufschluss 1 Titel</Headline>
+        <Headline>{outcropTitle}</Headline>
       </Header>
       <Container>
-        <Form onSubmit={onFormSubmit}>
+        <Form onSubmit={handleFormSubmit}>
           {dataKeys.map((key) => (
             <FormField key={key}>
               <label htmlFor={key}>{capitalizeFirstLetter(key)}:</label>
@@ -46,7 +94,7 @@ const OutcropDetailsPage = ({
                   id={key}
                   name={key}
                   value={formState?.[key] || ""}
-                  onChange={onInputChange}
+                  onChange={handleInputChange}
                   rows={5}
                 />
               ) : (
@@ -55,7 +103,7 @@ const OutcropDetailsPage = ({
                   id={key}
                   name={key}
                   value={formState?.[key] || ""}
-                  onChange={onInputChange}
+                  onChange={handleInputChange}
                 />
               )}
             </FormField>
@@ -65,21 +113,25 @@ const OutcropDetailsPage = ({
         </Form>
 
         {/* Submitted data */}
-        {submittedData && submittedData.length > 0 && (
-          <List>
-            {submittedData.map((data, index) => (
-              <ListItem key={index}>
-                <List>
-                  {dataKeys.map((key) => (
-                    <ListItem key={key}>
-                      <strong>{capitalizeFirstLetter(key)}:</strong> {data[key]}
-                    </ListItem>
-                  ))}
-                </List>
-              </ListItem>
-            ))}
-          </List>
-        )}
+        {storedSubmittedData &&
+          storedSubmittedData[outcropId] &&
+          storedSubmittedData[outcropId].length > 0 && (
+            <List>
+              {storedSubmittedData[outcropId].map((data, index) => (
+                <ListItem key={index}>
+                  <List>
+                    {dataKeys.map((key) => (
+                      <ListItem key={key}>
+                        <strong>{capitalizeFirstLetter(key)}:</strong>{" "}
+                        {data[key]}
+                      </ListItem>
+                    ))}
+                  </List>
+                </ListItem>
+              ))}
+            </List>
+          )}
+        <Button onClick={handleBack}>Go Back</Button>
       </Container>
     </>
   );
