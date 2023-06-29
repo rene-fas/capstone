@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Router from "next/router";
 
 import {
   Container,
@@ -12,12 +11,24 @@ import {
 } from "../component.styled";
 
 const FieldTripListPage = () => {
-  const fieldtrips = [
-    { id: 1, title: "Field Trip 1" },
-    { id: 2, title: "Field Trip 2" },
-    { id: 3, title: "Field Trip 3" },
-    // Add more field trip objects as needed
-  ];
+  const [fieldtrips, setFieldTrips] = useState([]);
+
+  useEffect(() => {
+    const storedFieldTrips = localStorage.getItem("fieldTrips");
+    if (storedFieldTrips) {
+      setFieldTrips(JSON.parse(storedFieldTrips));
+    }
+  }, []);
+
+  const handleAddFieldTrip = () => {
+    const newFieldTrip = {
+      id: fieldtrips.length + 1,
+      title: `Field Trip ${fieldtrips.length + 1}`,
+    };
+    const updatedFieldTrips = [...fieldtrips, newFieldTrip];
+    setFieldTrips(updatedFieldTrips);
+    localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
+  };
 
   return (
     <Container>
@@ -28,10 +39,7 @@ const FieldTripListPage = () => {
         {fieldtrips.map((fieldtrip) => (
           <ListItem key={fieldtrip.id}>
             <Link
-              href={{
-                pathname: "/outcroplist",
-                query: { id: fieldtrip.id, title: fieldtrip.title },
-              }}
+              href={`/outcroplist/${fieldtrip.id}`}
               as={`/outcroplist/${fieldtrip.id}`}
             >
               <Button>{fieldtrip.title}</Button>
@@ -39,6 +47,7 @@ const FieldTripListPage = () => {
           </ListItem>
         ))}
       </List>
+      <Button onClick={handleAddFieldTrip}>Add Field Trip</Button>
     </Container>
   );
 };
