@@ -19,7 +19,6 @@ const OutcropDetailsPage = () => {
   const fieldTripId = query.fieldtripId;
   const outcropId = query.outcropId;
   const outcropTitle = query.title;
-  console.log("QueryID", query);
   const handleBack = () => {
     router.back();
   };
