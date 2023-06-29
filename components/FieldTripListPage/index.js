@@ -15,6 +15,8 @@ const FieldTripListPage = () => {
   const [fieldtrips, setFieldTrips] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [newFieldTripTitle, setNewFieldTripTitle] = useState("");
+  const [newFieldTripDate, setNewFieldTripDate] = useState("");
+  const [dateError, setDateError] = useState(false);
 
   useEffect(() => {
     const storedFieldTrips = localStorage.getItem("fieldTrips");
@@ -24,15 +26,17 @@ const FieldTripListPage = () => {
   }, []);
 
   const handleAddFieldTrip = () => {
-    if (newFieldTripTitle.trim() !== "") {
+    if (newFieldTripTitle.trim() !== "" && !dateError) {
       const newFieldTrip = {
         id: fieldtrips.length + 1,
         title: newFieldTripTitle,
+        date: newFieldTripDate,
       };
       const updatedFieldTrips = [...fieldtrips, newFieldTrip];
       setFieldTrips(updatedFieldTrips);
       localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
       setNewFieldTripTitle("");
+      setNewFieldTripDate("");
       setShowPopup(false);
     }
   };
@@ -41,9 +45,22 @@ const FieldTripListPage = () => {
     setNewFieldTripTitle(e.target.value);
   };
 
+  const handleDateChange = (e) => {
+    const date = e.target.value;
+    setNewFieldTripDate(date);
+    setDateError(!isValidDate(date));
+  };
+
   const handleCancelAddFieldTrip = () => {
     setNewFieldTripTitle("");
+    setNewFieldTripDate("");
+    setDateError(false);
     setShowPopup(false);
+  };
+
+  const isValidDate = (date) => {
+    const pattern = /^(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\.\d{4}$/;
+    return pattern.test(date);
   };
 
   return (
@@ -59,6 +76,7 @@ const FieldTripListPage = () => {
                 pathname: "outcroplist/[fieldtripId]",
                 query: {
                   fieldtripTitle: fieldtrip.title,
+                  fieldtripDate: fieldtrip.date,
                 },
               }}
               as={`/outcroplist/${fieldtrip.id}`}
@@ -79,6 +97,16 @@ const FieldTripListPage = () => {
             onChange={handleTitleChange}
             placeholder="Enter field trip title"
           />
+          <input
+            type="text"
+            value={newFieldTripDate}
+            onChange={handleDateChange}
+            placeholder="Enter date (dd.mm.yyyy)"
+            className={dateError ? "error" : ""}
+          />
+          {dateError && (
+            <p className="error-text">Please enter a valid date (dd.mm.yyyy)</p>
+          )}
           <Button onClick={handleCancelAddFieldTrip}>Cancel</Button>
           <Button onClick={handleAddFieldTrip}>Add</Button>
         </Dialog>
