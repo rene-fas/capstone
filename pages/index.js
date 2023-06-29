@@ -1,21 +1,23 @@
 import React from "react";
 import { useRouter } from "next/router";
+import FieldTripListPage from "../components/FieldTripListPage";
 import OutcropListPage from "../components/OutcropListPage";
 import OutcropDetailsPage from "../components/OutcropDetailsPage";
 
 const Home = () => {
   const router = useRouter();
-  const { outcropId } = router.query;
+  const { fieldTripId, outcropId } = router.query;
 
-  return (
-    <>
-      {outcropId ? (
-        <OutcropDetailsPage outcropId={outcropId} />
-      ) : (
-        <OutcropListPage />
-      )}
-    </>
-  );
+  switch (true) {
+    case fieldTripId && outcropId:
+      return (
+        <OutcropDetailsPage fieldTripId={fieldTripId} outcropId={outcropId} />
+      );
+    case fieldTripId:
+      return <OutcropListPage fieldTripId={fieldTripId} />;
+    default:
+      return <FieldTripListPage />;
+  }
 };
 
 export default Home;
