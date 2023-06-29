@@ -8,10 +8,13 @@ import {
   List,
   ListItem,
   Button,
+  Dialog,
 } from "../component.styled";
 
 const FieldTripListPage = () => {
   const [fieldtrips, setFieldTrips] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [newFieldTripTitle, setNewFieldTripTitle] = useState("");
 
   useEffect(() => {
     const storedFieldTrips = localStorage.getItem("fieldTrips");
@@ -21,13 +24,26 @@ const FieldTripListPage = () => {
   }, []);
 
   const handleAddFieldTrip = () => {
-    const newFieldTrip = {
-      id: fieldtrips.length + 1,
-      title: `Field Trip ${fieldtrips.length + 1}`,
-    };
-    const updatedFieldTrips = [...fieldtrips, newFieldTrip];
-    setFieldTrips(updatedFieldTrips);
-    localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
+    if (newFieldTripTitle.trim() !== "") {
+      const newFieldTrip = {
+        id: fieldtrips.length + 1,
+        title: newFieldTripTitle,
+      };
+      const updatedFieldTrips = [...fieldtrips, newFieldTrip];
+      setFieldTrips(updatedFieldTrips);
+      localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
+      setNewFieldTripTitle("");
+      setShowPopup(false);
+    }
+  };
+
+  const handleTitleChange = (e) => {
+    setNewFieldTripTitle(e.target.value);
+  };
+
+  const handleCancelAddFieldTrip = () => {
+    setNewFieldTripTitle("");
+    setShowPopup(false);
   };
 
   return (
@@ -39,7 +55,12 @@ const FieldTripListPage = () => {
         {fieldtrips.map((fieldtrip) => (
           <ListItem key={fieldtrip.id}>
             <Link
-              href={`/outcroplist/${fieldtrip.id}`}
+              href={{
+                pathname: "outcroplist/[fieldtripId]",
+                query: {
+                  fieldtripTitle: fieldtrip.title,
+                },
+              }}
               as={`/outcroplist/${fieldtrip.id}`}
             >
               <Button>{fieldtrip.title}</Button>
@@ -47,7 +68,21 @@ const FieldTripListPage = () => {
           </ListItem>
         ))}
       </List>
-      <Button onClick={handleAddFieldTrip}>Add Field Trip</Button>
+      <Button onClick={() => setShowPopup(true)}>Add Field Trip</Button>
+
+      {showPopup && (
+        <Dialog open>
+          <h2>Add Field Trip</h2>
+          <input
+            type="text"
+            value={newFieldTripTitle}
+            onChange={handleTitleChange}
+            placeholder="Enter field trip title"
+          />
+          <Button onClick={handleCancelAddFieldTrip}>Cancel</Button>
+          <Button onClick={handleAddFieldTrip}>Add</Button>
+        </Dialog>
+      )}
     </Container>
   );
 };
