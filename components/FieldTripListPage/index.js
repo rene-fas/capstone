@@ -12,56 +12,84 @@ import {
 } from "../component.styled";
 
 const FieldTripListPage = () => {
-  const [fieldtrips, setFieldTrips] = useState([]);
-  const [showPopup, setShowPopup] = useState(false);
-  const [newFieldTripTitle, setNewFieldTripTitle] = useState("");
-  const [newFieldTripDate, setNewFieldTripDate] = useState("");
-  const [dateError, setDateError] = useState(false);
+  const [fieldtripData, setFieldtripData] = useState({
+    fieldtrips: [],
+    showPopup: false,
+    newFieldTripTitle: "",
+    newFieldTripDate: "",
+    dateError: false,
+  });
 
   useEffect(() => {
     const storedFieldTrips = localStorage.getItem("fieldTrips");
     if (storedFieldTrips) {
-      setFieldTrips(JSON.parse(storedFieldTrips));
+      setFieldtripData((prevData) => ({
+        ...prevData,
+        fieldtrips: JSON.parse(storedFieldTrips),
+      }));
     }
   }, []);
 
   const handleAddFieldTrip = () => {
-    if (newFieldTripTitle.trim() !== "" && !dateError) {
+    if (
+      fieldtripData.newFieldTripTitle.trim() !== "" &&
+      !fieldtripData.dateError
+    ) {
       const newFieldTrip = {
-        id: fieldtrips.length + 1,
-        title: newFieldTripTitle,
-        date: newFieldTripDate,
+        id: fieldtripData.fieldtrips.length + 1,
+        title: fieldtripData.newFieldTripTitle,
+        date: fieldtripData.newFieldTripDate,
       };
-      const updatedFieldTrips = [...fieldtrips, newFieldTrip];
-      setFieldTrips(updatedFieldTrips);
+      const updatedFieldTrips = [...fieldtripData.fieldtrips, newFieldTrip];
+      setFieldtripData((prevData) => ({
+        ...prevData,
+        fieldtrips: updatedFieldTrips,
+        newFieldTripTitle: "",
+        newFieldTripDate: "",
+        showPopup: false,
+      }));
       localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
-      setNewFieldTripTitle("");
-      setNewFieldTripDate("");
-      setShowPopup(false);
     }
   };
 
   const handleTitleChange = (e) => {
-    setNewFieldTripTitle(e.target.value);
+    setFieldtripData((prevData) => ({
+      ...prevData,
+      newFieldTripTitle: e.target.value,
+    }));
   };
 
   const handleDateChange = (e) => {
     const date = e.target.value;
-    setNewFieldTripDate(date);
-    setDateError(!isValidDate(date));
+    setFieldtripData((prevData) => ({
+      ...prevData,
+      newFieldTripDate: date,
+      dateError: !isValidDate(date),
+    }));
   };
 
   const handleCancelAddFieldTrip = () => {
-    setNewFieldTripTitle("");
-    setNewFieldTripDate("");
-    setDateError(false);
-    setShowPopup(false);
+    setFieldtripData((prevData) => ({
+      ...prevData,
+      newFieldTripTitle: "",
+      newFieldTripDate: "",
+      dateError: false,
+      showPopup: false,
+    }));
   };
 
   const isValidDate = (date) => {
     const pattern = /^(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\.\d{4}$/;
     return pattern.test(date);
   };
+
+  const {
+    fieldtrips,
+    showPopup,
+    newFieldTripTitle,
+    newFieldTripDate,
+    dateError,
+  } = fieldtripData;
 
   return (
     <Container>
@@ -81,12 +109,23 @@ const FieldTripListPage = () => {
               }}
               as={`/outcroplist/${fieldtrip.id}`}
             >
-              <Button>{fieldtrip.title}</Button>
+              <Button>
+                {fieldtrip.title} {fieldtrip.date}
+              </Button>
             </Link>
           </ListItem>
         ))}
       </List>
-      <Button onClick={() => setShowPopup(true)}>Add Field Trip</Button>
+      <Button
+        onClick={() =>
+          setFieldtripData((prevData) => ({
+            ...prevData,
+            showPopup: true,
+          }))
+        }
+      >
+        Add Field Trip
+      </Button>
 
       {showPopup && (
         <Dialog open>
