@@ -46,3 +46,7 @@ export const Header = styled.header`
   background-color: #fff;
   z-index: 1;
 `;
+
+export const Dialog = styled.dialog`
+  margin-top: 120px;
+`;

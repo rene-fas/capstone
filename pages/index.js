@@ -8,16 +8,6 @@ const Home = () => {
   const router = useRouter();
   const { fieldTripId, outcropId } = router.query;
 
-  switch (true) {
-    case fieldTripId && outcropId:
-      return (
-        <OutcropDetailsPage fieldTripId={fieldTripId} outcropId={outcropId} />
-      );
-    case fieldTripId:
-      return <OutcropListPage fieldTripId={fieldTripId} />;
-    default:
-      return <FieldTripListPage />;
-  }
+  return <FieldTripListPage />;
 };
-
 export default Home;

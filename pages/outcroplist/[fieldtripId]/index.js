@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 
 const OutcropList = () => {
   const router = useRouter();
-  const { fieldtripID } = router.query;
+  const { fieldtripId } = router.query;
 
-  return <OutcropListPage fieldtripId={fieldtripID} />;
+  return <OutcropListPage fieldtripId={fieldtripId} />;
 };
 
 export default OutcropList;

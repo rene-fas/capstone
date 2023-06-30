@@ -18,16 +18,21 @@ const OutcropListPage = () => {
     { id: 3, title: "Outcrop 3" },
     // Add more outcrop objects as needed
   ];
+
   const router = useRouter();
   const { query } = router;
-  const fieldtripId = query.fieldtripId;
+  const { fieldtripId, fieldtripTitle, fieldtripDate } = query;
+
   const handleBack = () => {
     router.back();
   };
+
   return (
     <Container>
       <Header>
-        <Headline>Outcrop List</Headline>
+        <Headline>
+          {fieldtripTitle} {fieldtripDate}
+        </Headline>
       </Header>
       <List>
         {outcrops.map((outcrop) => (
