@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -9,19 +9,49 @@ import {
   List,
   ListItem,
   Button,
+  Dialog,
 } from "../component.styled";
 
 const OutcropListPage = () => {
-  const outcrops = [
-    { id: 1, title: "Outcrop 1" },
-    { id: 2, title: "Outcrop 2" },
-    { id: 3, title: "Outcrop 3" },
-    // Add more outcrop objects as needed
-  ];
+  const [outcropsData, setOutcropsData] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [newOutcropTitle, setNewOutcropTitle] = useState("");
+
+  useEffect(() => {
+    const storedOutcrops = localStorage.getItem("outcrops");
+    if (storedOutcrops) {
+      setOutcropsData(JSON.parse(storedOutcrops));
+    }
+  }, []);
+
+  const handleAddOutcrop = () => {
+    if (newOutcropTitle.trim() !== "") {
+      const newOutcrop = {
+        id: outcropsData.length + 1,
+        title: newOutcropTitle,
+      };
+      const updatedOutcrops = [...outcropsData, newOutcrop];
+      setOutcropsData(updatedOutcrops);
+      localStorage.setItem("outcrops", JSON.stringify(updatedOutcrops));
+      setShowPopup(false);
+      setNewOutcropTitle("");
+    }
+  };
+
+  const handleTitleChange = (e) => {
+    setNewOutcropTitle(e.target.value);
+  };
+
+  const handleCancelAddOutcrop = () => {
+    setShowPopup(false);
+    setNewOutcropTitle("");
+  };
+
+  const outcrops = outcropsData || [];
 
   const router = useRouter();
   const { query } = router;
-  const { fieldtripId, fieldtripTitle, fieldtripDate } = query;
+  const { fieldtripId, fieldtripTitle } = query;
 
   const handleBack = () => {
     router.back();
@@ -30,9 +60,7 @@ const OutcropListPage = () => {
   return (
     <Container>
       <Header>
-        <Headline>
-          {fieldtripTitle} {fieldtripDate}
-        </Headline>
+        <Headline>{fieldtripTitle} Field Trip</Headline>
       </Header>
       <List>
         {outcrops.map((outcrop) => (
@@ -53,7 +81,22 @@ const OutcropListPage = () => {
           </ListItem>
         ))}
       </List>
+      <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
       <Button onClick={handleBack}>Go Back</Button>
+
+      {showPopup && (
+        <Dialog open>
+          <h2>Add Outcrop</h2>
+          <input
+            type="text"
+            value={newOutcropTitle}
+            onChange={handleTitleChange}
+            placeholder="Outcrop Title"
+          />
+          <Button onClick={handleCancelAddOutcrop}>Cancel</Button>
+          <Button onClick={handleAddOutcrop}>Add</Button>
+        </Dialog>
+      )}
     </Container>
   );
 };
