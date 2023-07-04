@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { capitalizeFirstLetter } from "../../helper/functions";
 import { useRouter } from "next/router";
 
@@ -15,10 +15,43 @@ import {
 
 const OutcropDetailsPage = () => {
   const router = useRouter();
-  const { query } = router;
-  const fieldTripId = query.fieldtripId;
-  const outcropId = query.outcropId;
-  const outcropTitle = query.title;
+  const [outcropTitle, setOutcropTitle] = useState("");
+  const [fieldTripId, setFieldTripId] = useState("");
+  const [outcropId, setOutcropId] = useState("");
+
+  useEffect(() => {
+    try {
+      const storedSubmittedData = getStoredSubmittedData();
+      const currentFieldTripId = storedSubmittedData.currentFieldTripId;
+
+      if (currentFieldTripId) {
+        const currentFieldTrip = storedSubmittedData.fieldTrips.find(
+          (fieldTrip) => fieldTrip.id === currentFieldTripId
+        );
+
+        if (currentFieldTrip && currentFieldTrip.outcrops.length > 0) {
+          const currentOutcropId = currentFieldTrip.outcrops[0].id;
+          const currentOutcrop = currentFieldTrip.outcrops.find(
+            (outcrop) => outcrop.id === currentOutcropId
+          );
+          console.log(currentOutcrop);
+          if (currentOutcrop) {
+            const currentOutcropTitle = currentOutcrop.name;
+
+            setFieldTripId(currentFieldTripId);
+            setOutcropId(currentOutcropId);
+            setOutcropTitle(currentOutcropTitle);
+          }
+        }
+      }
+    } catch (error) {
+      console.error(
+        "Error retrieving outcrop details from local storage:",
+        error
+      );
+    }
+  }, [setFieldTripId, setOutcropId, setOutcropTitle]);
+
   const handleBack = () => {
     router.back();
   };

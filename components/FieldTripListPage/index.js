@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-
+import { useRouter } from "next/router";
 import {
   Container,
   Headline,
@@ -10,126 +10,85 @@ import {
   Button,
   Dialog,
 } from "../component.styled";
+import { fieldtrips as mockFieldtrips } from "../../db/mocked/index.js";
+import useLocalStorageState from "use-local-storage-state";
 
 const FieldTripListPage = () => {
-  const [fieldtripData, setFieldtripData] = useState({
-    fieldtrips: [],
-    showPopup: false,
-    newFieldTripTitle: "",
-    newFieldTripDate: "",
+  const router = useRouter();
+  const [showPopup, setShowPopup] = useState(false);
+  const [newFieldTripName, setNewFieldTripName] = useState("");
+  const [newFieldTripDate, setNewFieldTripDate] = useState("");
+  const [fieldtrips, setFieldtrips] = useLocalStorageState("fieldTrips", {
+    defaultValue: mockFieldtrips,
   });
 
-  useEffect(() => {
-    const storedFieldTrips = localStorage.getItem("fieldTrips");
-    if (storedFieldTrips) {
-      setFieldtripData((prevData) => ({
-        ...prevData,
-        fieldtrips: JSON.parse(storedFieldTrips),
-      }));
-    }
-  }, []);
-
   const handleAddFieldTrip = () => {
-    if (fieldtripData.newFieldTripTitle.trim() !== "") {
+    if (newFieldTripName.trim() !== "" && newFieldTripDate.trim() !== "") {
+      const newDate = formatDate(newFieldTripDate);
+
       const newFieldTrip = {
-        id: fieldtripData.fieldtrips.length + 1,
-        title: fieldtripData.newFieldTripTitle,
-        date: formatDate(fieldtripData.newFieldTripDate),
+        id: fieldtrips.length + 1,
+        fieldtripname: newFieldTripName,
+        fieldtripdate: newDate,
+        outcrops: [],
       };
-      const updatedFieldTrips = [...fieldtripData.fieldtrips, newFieldTrip];
-      setFieldtripData((prevData) => ({
-        ...prevData,
-        fieldtrips: updatedFieldTrips,
-        newFieldTripTitle: "",
-        newFieldTripDate: "",
-        showPopup: false,
-      }));
-      localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
+      setFieldtrips([...fieldtrips, newFieldTrip]);
+      setNewFieldTripName("");
+      setNewFieldTripDate("");
+      setShowPopup(false);
     }
   };
 
-  const formatDate = (date) => {
-    const [year, month, day] = date.split("-");
-    return `${day}-${month}-${year}`;
-  };
-
-  const handleTitleChange = (e) => {
-    setFieldtripData((prevData) => ({
-      ...prevData,
-      newFieldTripTitle: e.target.value,
-    }));
-  };
-
-  const handleDateChange = (e) => {
-    const date = e.target.value;
-    setFieldtripData((prevData) => ({
-      ...prevData,
-      newFieldTripDate: date,
-    }));
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
   };
 
   const handleCancelAddFieldTrip = () => {
-    setFieldtripData((prevData) => ({
-      ...prevData,
-      newFieldTripTitle: "",
-      newFieldTripDate: "",
-      showPopup: false,
-    }));
+    setNewFieldTripName("");
+    setNewFieldTripDate("");
+    setShowPopup(false);
   };
 
-  const { fieldtrips, showPopup, newFieldTripTitle, newFieldTripDate } =
-    fieldtripData;
+  const handleFieldTripLinkClick = (fieldTripId) => {
+    localStorage.setItem("currentFieldTripId", fieldTripId);
+  };
 
   return (
     <Container>
       <Header>
-        <Headline>Fieldtrip List</Headline>
+        <Headline>Field Trip List</Headline>
       </Header>
       <List>
         {fieldtrips.map((fieldtrip) => (
           <ListItem key={fieldtrip.id}>
-            <Link
-              href={{
-                pathname: "outcroplist/[fieldtripId]",
-                query: {
-                  fieldtripTitle: fieldtrip.title,
-                  fieldtripDate: fieldtrip.date,
-                },
-              }}
-              as={`/outcroplist/${fieldtrip.id}`}
-            >
-              <Button>
-                {fieldtrip.title} {fieldtrip.date}
+            <Link href={`/outcroplist/${fieldtrip.id}`} passHref>
+              <Button onClick={() => handleFieldTripLinkClick(fieldtrip.id)}>
+                {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
               </Button>
             </Link>
           </ListItem>
         ))}
       </List>
-      <Button
-        onClick={() =>
-          setFieldtripData((prevData) => ({
-            ...prevData,
-            showPopup: true,
-          }))
-        }
-      >
-        Add Field Trip
-      </Button>
+      <Button onClick={() => setShowPopup(true)}>Add Field Trip</Button>
 
       {showPopup && (
-        <Dialog open>
+        <Dialog>
           <h2>Add Field Trip</h2>
           <input
             type="text"
-            value={newFieldTripTitle}
-            onChange={handleTitleChange}
-            placeholder="Exkursionsname"
+            value={newFieldTripName}
+            onChange={(e) => setNewFieldTripName(e.target.value)}
+            placeholder="Field Trip Name"
           />
           <input
             type="date"
             value={newFieldTripDate}
-            onChange={handleDateChange}
-            placeholder="dd-mm-yyyy"
+            onChange={(e) => setNewFieldTripDate(e.target.value)}
+            placeholder="Select a date"
           />
           <Button onClick={handleCancelAddFieldTrip}>Cancel</Button>
           <Button onClick={handleAddFieldTrip}>Add</Button>

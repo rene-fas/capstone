@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 import {
   Container,
   Headline,
@@ -12,91 +11,117 @@ import {
   Dialog,
 } from "../component.styled";
 
-const OutcropListPage = () => {
-  const [outcropsData, setOutcropsData] = useState([]);
-  const [showPopup, setShowPopup] = useState(false);
-  const [newOutcropTitle, setNewOutcropTitle] = useState("");
+const OutcropListPage = ({ fieldtripId }) => {
+  const router = useRouter();
+  const [parsedFieldtrip, setParsedFieldtrip] = useState(null);
+  const [currentFieldTripId, setCurrentFieldTripId] = useState(null);
 
   useEffect(() => {
-    const storedOutcrops = localStorage.getItem("outcrops");
-    if (storedOutcrops) {
-      setOutcropsData(JSON.parse(storedOutcrops));
+    try {
+      const fieldTrips = JSON.parse(localStorage.getItem("fieldTrips"));
+
+      const storedCurrentFieldTripId = JSON.parse(
+        localStorage.getItem("currentFieldTripId")
+      );
+
+      const currentFieldTrip = fieldTrips.find(
+        (fieldtrip) => fieldtrip.id === storedCurrentFieldTripId
+      );
+
+      setParsedFieldtrip(currentFieldTrip);
+      setCurrentFieldTripId(storedCurrentFieldTripId);
+    } catch (error) {
+      console.error("Error accessing field trips from local storage:", error);
     }
   }, []);
 
-  const handleAddOutcrop = () => {
-    if (newOutcropTitle.trim() !== "") {
-      const newOutcrop = {
-        id: outcropsData.length + 1,
-        title: newOutcropTitle,
-      };
-      const updatedOutcrops = [...outcropsData, newOutcrop];
-      setOutcropsData(updatedOutcrops);
-      localStorage.setItem("outcrops", JSON.stringify(updatedOutcrops));
-      setShowPopup(false);
-      setNewOutcropTitle("");
-    }
-  };
-
-  const handleTitleChange = (e) => {
-    setNewOutcropTitle(e.target.value);
-  };
-
-  const handleCancelAddOutcrop = () => {
-    setShowPopup(false);
-    setNewOutcropTitle("");
-  };
-
-  const outcrops = outcropsData || [];
-
-  const router = useRouter();
-  const { query } = router;
-  const { fieldtripId, fieldtripTitle } = query;
+  const [showPopup, setShowPopup] = useState(false);
+  const [newOutcropTitle, setNewOutcropTitle] = useState("");
 
   const handleBack = () => {
     router.back();
   };
 
+  const handleAddOutcrop = () => {
+    if (newOutcropTitle.trim() !== "") {
+      try {
+        const fieldTrips = JSON.parse(localStorage.getItem("fieldTrips"));
+
+        const currentFieldTrip = fieldTrips.find(
+          (fieldtrip) => fieldtrip.id === currentFieldTripId
+        );
+
+        const newOutcrop = {
+          id: currentFieldTrip.outcrops.length + 1,
+          name: newOutcropTitle,
+          details: [],
+        };
+
+        currentFieldTrip.outcrops.push(newOutcrop);
+        localStorage.setItem("fieldTrips", JSON.stringify(fieldTrips));
+
+        setParsedFieldtrip((prevFieldtrip) => ({
+          ...prevFieldtrip,
+          outcrops: [...prevFieldtrip.outcrops, newOutcrop],
+        }));
+        setNewOutcropTitle("");
+        setShowPopup(false);
+      } catch (error) {
+        console.error("Error adding new outcrop:", error);
+      }
+    }
+  };
+
+  const handleCancelAddOutcrop = () => {
+    setNewOutcropTitle("");
+    setShowPopup(false);
+  };
+
+  if (!parsedFieldtrip) {
+    return <div>Loading...</div>;
+  }
+  const handleOutcropLinkClick = (outcropId) => {
+    localStorage.setItem("currentOutcropId", outcropId);
+  };
+
   return (
     <Container>
       <Header>
-        <Headline>{fieldtripTitle} Field Trip</Headline>
+        <Headline>
+          {parsedFieldtrip.fieldtripname} {parsedFieldtrip.fieldtripdate}
+        </Headline>
       </Header>
       <List>
-        {outcrops.map((outcrop) => (
+        {parsedFieldtrip.outcrops.map((outcrop) => (
           <ListItem key={outcrop.id}>
             <Link
-              href={{
-                pathname: "/outcroplist/[fieldtripId]/outcrop/[outcropId]",
-                query: {
-                  outcropId: outcrop.id,
-                  title: outcrop.title,
-                  fieldtripId: fieldtripId,
-                },
-              }}
-              as={`/outcroplist/${fieldtripId}/outcrop/${outcrop.id}`}
+              href={`/outcroplist/${fieldtripId}/outcrop/${outcrop.id}`}
+              passHref
             >
-              <Button>{outcrop.title}</Button>
+              <Button onClick={() => handleOutcropLinkClick(outcrop.id)}>
+                {outcrop.name}
+              </Button>
             </Link>
           </ListItem>
         ))}
       </List>
       <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
-      <Button onClick={handleBack}>Go Back</Button>
 
       {showPopup && (
-        <Dialog open>
+        <Dialog>
           <h2>Add Outcrop</h2>
           <input
             type="text"
             value={newOutcropTitle}
-            onChange={handleTitleChange}
+            onChange={(e) => setNewOutcropTitle(e.target.value)}
             placeholder="Outcrop Title"
           />
           <Button onClick={handleCancelAddOutcrop}>Cancel</Button>
           <Button onClick={handleAddOutcrop}>Add</Button>
         </Dialog>
       )}
+
+      <Button onClick={handleBack}>Go Back</Button>
     </Container>
   );
 };
