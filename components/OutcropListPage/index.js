@@ -77,9 +77,45 @@ const OutcropListPage = ({ fieldtripId }) => {
     setShowPopup(false);
   };
 
+  const handleDeleteOutcrop = (outcropId) => {
+    try {
+      const storedFieldTrips = JSON.parse(localStorage.getItem("fieldTrips"));
+
+      const updatedFieldTrips = storedFieldTrips.map((fieldTrip) => {
+        if (fieldTrip.id === parseInt(currentFieldTripId)) {
+          const updatedOutcrops = fieldTrip.outcrops.filter(
+            (outcrop) => outcrop.id !== parseInt(outcropId)
+          );
+
+          return {
+            ...fieldTrip,
+            outcrops: updatedOutcrops,
+          };
+        }
+        return fieldTrip;
+      });
+
+      localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
+
+      // Update the local state if the current field trip is affected
+      if (parseInt(currentFieldTripId) === parseInt(fieldtripId)) {
+        const updatedOutcrops = parsedFieldtrip.outcrops.filter(
+          (outcrop) => outcrop.id !== parseInt(outcropId)
+        );
+        setParsedFieldtrip((prevFieldtrip) => ({
+          ...prevFieldtrip,
+          outcrops: updatedOutcrops,
+        }));
+      }
+    } catch (error) {
+      console.error("Error deleting outcrop:", error);
+    }
+  };
+
   if (!parsedFieldtrip) {
     return <div>Loading...</div>;
   }
+
   const handleOutcropLinkClick = (outcropId) => {
     localStorage.setItem("currentOutcropId", outcropId);
   };
@@ -102,6 +138,9 @@ const OutcropListPage = ({ fieldtripId }) => {
                 {outcrop.name}
               </Button>
             </Link>
+            <Button onClick={() => handleDeleteOutcrop(outcrop.id)}>
+              Delete
+            </Button>
           </ListItem>
         ))}
       </List>
