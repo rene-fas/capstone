@@ -116,19 +116,21 @@ const FieldTripListPage = () => {
                   {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
                 </LinkButton>
               </CustomLink>
-              <RemoveButton onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
-                -
-              </RemoveButton>
-              <EditButton onClick={() => handleEditFieldTrip(fieldtrip.id)}>
-                onClick=
-                {() => {
+
+              <EditButton
+                onClick={() => {
                   setEditingFieldTripId(fieldtrip.id);
                   setEditedFieldTripName(fieldtrip.fieldtripname);
                   setEditedFieldTripDate(fieldtrip.fieldtripdate);
                   setShowEditPopup(true);
                 }}
-                disabled={editingFieldTripId !== null}> Edit
+                disabled={editingFieldTripId !== null}
+              >
+                Edit
               </EditButton>
+              <RemoveButton onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
+                -
+              </RemoveButton>
             </ButtonGroup>
           </ListItem>
         ))}
