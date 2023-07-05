@@ -9,6 +9,10 @@ import {
   ListItem,
   Button,
   Dialog,
+  ButtonGroup,
+  LinkButton,
+  RemoveButton,
+  CustomLink,
 } from "../component.styled";
 
 const OutcropListPage = ({ fieldtripId }) => {
@@ -77,9 +81,47 @@ const OutcropListPage = ({ fieldtripId }) => {
     setShowPopup(false);
   };
 
+  const handleDeleteOutcrop = (outcropId, event) => {
+    event.preventDefault(); // Prevent the default link behavior
+
+    try {
+      const storedFieldTrips = JSON.parse(localStorage.getItem("fieldTrips"));
+
+      const updatedFieldTrips = storedFieldTrips.map((fieldTrip) => {
+        if (fieldTrip.id === parseInt(currentFieldTripId)) {
+          const updatedOutcrops = fieldTrip.outcrops.filter(
+            (outcrop) => outcrop.id !== parseInt(outcropId)
+          );
+
+          return {
+            ...fieldTrip,
+            outcrops: updatedOutcrops,
+          };
+        }
+        return fieldTrip;
+      });
+
+      localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
+
+      // Update the local state if the current field trip is affected
+      if (parseInt(currentFieldTripId) === parseInt(fieldtripId)) {
+        const updatedOutcrops = parsedFieldtrip.outcrops.filter(
+          (outcrop) => outcrop.id !== parseInt(outcropId)
+        );
+        setParsedFieldtrip((prevFieldtrip) => ({
+          ...prevFieldtrip,
+          outcrops: updatedOutcrops,
+        }));
+      }
+    } catch (error) {
+      console.error("Error deleting outcrop:", error);
+    }
+  };
+
   if (!parsedFieldtrip) {
     return <div>Loading...</div>;
   }
+
   const handleOutcropLinkClick = (outcropId) => {
     localStorage.setItem("currentOutcropId", outcropId);
   };
@@ -94,18 +136,27 @@ const OutcropListPage = ({ fieldtripId }) => {
       <List>
         {parsedFieldtrip.outcrops.map((outcrop) => (
           <ListItem key={outcrop.id}>
-            <Link
-              href={`/outcroplist/${fieldtripId}/outcrop/${outcrop.id}`}
-              passHref
-            >
-              <Button onClick={() => handleOutcropLinkClick(outcrop.id)}>
-                {outcrop.name}
-              </Button>
-            </Link>
+            <ButtonGroup>
+              <CustomLink
+                href={`/outcroplist/${fieldtripId}/outcrop/${outcrop.id}`}
+                passHref
+              >
+                <LinkButton onClick={() => handleOutcropLinkClick(outcrop.id)}>
+                  {outcrop.name}
+                </LinkButton>
+              </CustomLink>
+              <RemoveButton onClick={(e) => handleDeleteOutcrop(outcrop.id, e)}>
+                -
+              </RemoveButton>
+            </ButtonGroup>
           </ListItem>
         ))}
       </List>
-      <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
+      <ButtonGroup>
+        {" "}
+        <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
+        <Button onClick={handleBack}>Go Back</Button>
+      </ButtonGroup>
 
       {showPopup && (
         <Dialog>
@@ -120,8 +171,6 @@ const OutcropListPage = ({ fieldtripId }) => {
           <Button onClick={handleAddOutcrop}>Add</Button>
         </Dialog>
       )}
-
-      <Button onClick={handleBack}>Go Back</Button>
     </Container>
   );
 };

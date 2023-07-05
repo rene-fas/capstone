@@ -30,9 +30,9 @@ const OutcropDetailsPage = () => {
 
   useEffect(() => {
     try {
-      const storedFieldTrips = getStoredFieldTrips();
-      const currentFieldTripId = localStorage.getItem("currentFieldTripId");
-      const currentOutcropId = localStorage.getItem("currentOutcropId");
+      const storedFieldTrips = getStoredFieldTrips(); // get stored field trips from local storage
+      const currentFieldTripId = localStorage.getItem("currentFieldTripId"); //get current Field Trip Id from local storage
+      const currentOutcropId = localStorage.getItem("currentOutcropId"); //get current Outcrop Id from local storage
       setFieldTripId(currentFieldTripId);
       const outcropIdFromStorage = parseInt(currentOutcropId);
       const currentFieldTrip = storedFieldTrips.find(
@@ -40,16 +40,17 @@ const OutcropDetailsPage = () => {
       );
 
       const outcrop =
-        currentFieldTrip &&
-        currentFieldTrip.outcrops &&
+        currentFieldTrip && //if currentFieldTrip exists
+        currentFieldTrip.outcrops && //if currentFieldTrip has outcrops
         currentFieldTrip.outcrops.find(
-          (outcrop) => outcrop.id === parseInt(currentOutcropId)
+          (outcrop) => outcrop.id === parseInt(currentOutcropId) //find outcrop by outcrop id
         );
 
       setCurrentOutcrop(outcrop);
 
       if (outcropIdFromStorage) {
-        setOutcropId(outcropIdFromStorage);
+        //if outcropId exists in local storage
+        setOutcropId(outcropIdFromStorage); //set outcropId to outcropId from local storage
       } else {
         console.error(
           "Invalid outcropId stored in local storage:",
@@ -58,7 +59,7 @@ const OutcropDetailsPage = () => {
       }
 
       if (outcrop && outcrop.details) {
-        setSubmittedData(outcrop.details);
+        setSubmittedData(outcrop.details); //set submitted data to outcrop details
       }
     } catch (error) {
       console.error(
@@ -84,8 +85,8 @@ const OutcropDetailsPage = () => {
 
   const getStoredFieldTrips = () => {
     try {
-      const storedData = localStorage.getItem("fieldTrips");
-      return storedData ? JSON.parse(storedData) : [];
+      const storedData = localStorage.getItem("fieldTrips"); // get stored field trips from local storage
+      return storedData ? JSON.parse(storedData) : []; // parse stored field trips data
     } catch (error) {
       console.error("Error parsing stored field trips data:", error);
       return [];
@@ -94,7 +95,7 @@ const OutcropDetailsPage = () => {
 
   const setStoredFieldTrips = (data) => {
     try {
-      localStorage.setItem("fieldTrips", JSON.stringify(data));
+      localStorage.setItem("fieldTrips", JSON.stringify(data)); // set stored field trips
     } catch (error) {
       console.error("Error setting stored field trips data:", error);
     }
@@ -110,17 +111,19 @@ const OutcropDetailsPage = () => {
     }
 
     try {
-      const storedFieldTrips = getStoredFieldTrips();
+      const storedFieldTrips = getStoredFieldTrips(); // get stored field trips from local storage
       const updatedFieldTrips = storedFieldTrips.map((fieldTrip) => {
+        // update existing field trip
         if (fieldTrip.id === parseInt(fieldTripId)) {
           const updatedOutcrops = fieldTrip.outcrops.map((outcrop) => {
+            // update existing outcrop
             if (outcrop.id === parseInt(outcropId)) {
-              const updatedDetails = outcrop.details
+              const updatedDetails = outcrop.details // update existing outcrop details
                 ? [...outcrop.details, newData]
-                : [newData];
+                : [newData]; // add new outcrop details
               return {
-                ...outcrop,
-                details: updatedDetails,
+                ...outcrop, // update existing outcrop
+                details: updatedDetails, // update existing outcrop details
               };
             }
             return outcrop;
@@ -134,9 +137,9 @@ const OutcropDetailsPage = () => {
         return fieldTrip;
       });
 
-      setStoredFieldTrips(updatedFieldTrips);
-      setSubmittedData((prevSubmittedData) => [...prevSubmittedData, newData]);
-      setFormState({});
+      setStoredFieldTrips(updatedFieldTrips); // set stored field trips
+      setSubmittedData((prevSubmittedData) => [...prevSubmittedData, newData]); // add new data to submitted data
+      setFormState({}); // clear form state
     } catch (error) {
       console.error("Error updating stored field trips data:", error);
     }

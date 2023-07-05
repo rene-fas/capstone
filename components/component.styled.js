@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Link from "next/link";
 
 export const Container = styled.div`
   max-width: 600px;
@@ -32,6 +33,9 @@ export const List = styled.ul`
 
 export const ListItem = styled.li`
   padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Headline = styled.h1`
@@ -57,4 +61,24 @@ export const Dialog = styled.div`
   padding: 20px;
   border-radius: 4px;
   z-index: 2;
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+`;
+
+export const LinkButton = styled(Button)`
+  flex-basis: 75%;
+`;
+
+export const RemoveButton = styled(Button)`
+  flex-basis: 25%;
+`;
+
+export const CustomLink = styled(Link)`
+  text-decoration: none;
+  flex-basis: 75%;
 `;
