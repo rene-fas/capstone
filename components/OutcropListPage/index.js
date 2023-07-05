@@ -10,6 +10,9 @@ import {
   Button,
   Dialog,
   ButtonGroup,
+  LinkButton,
+  RemoveButton,
+  CustomLink,
 } from "../component.styled";
 
 const OutcropListPage = ({ fieldtripId }) => {
@@ -134,12 +137,17 @@ const OutcropListPage = ({ fieldtripId }) => {
         {parsedFieldtrip.outcrops.map((outcrop) => (
           <ListItem key={outcrop.id}>
             <ButtonGroup>
-              <Button onClick={() => handleOutcropLinkClick(outcrop.id)}>
-                {outcrop.name}
-              </Button>
-              <Button onClick={(e) => handleDeleteOutcrop(outcrop.id, e)}>
+              <CustomLink
+                href={`/outcroplist/${fieldtripId}/outcrop/${outcrop.id}`}
+                passHref
+              >
+                <LinkButton onClick={() => handleOutcropLinkClick(outcrop.id)}>
+                  {outcrop.name}
+                </LinkButton>
+              </CustomLink>
+              <RemoveButton onClick={(e) => handleDeleteOutcrop(outcrop.id, e)}>
                 -
-              </Button>
+              </RemoveButton>
             </ButtonGroup>
           </ListItem>
         ))}

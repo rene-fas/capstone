@@ -1,23 +1,30 @@
 import styled from "styled-components";
+import Link from "next/link";
 
 export const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   padding-top: 100px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  align-items: center;
 `;
 
 export const Button = styled.button`
+  display: block;
+  width: 100%;
   padding: 10px;
   background-color: #337ab7;
   color: #fff;
   border: none;
   border-radius: 4px;
+  margin-bottom: 10px;
   cursor: pointer;
 `;
 
 export const List = styled.ul`
-  margin-top: 50px;
+  margin-top: 5px;
   list-style-type: none;
   padding: 2px;
   border: 1px solid #ccc;
@@ -60,4 +67,18 @@ export const ButtonGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
+`;
+
+export const LinkButton = styled(Button)`
+  flex-basis: 75%;
+`;
+
+export const RemoveButton = styled(Button)`
+  flex-basis: 25%;
+`;
+
+export const CustomLink = styled(Link)`
+  text-decoration: none;
+  flex-basis: 75%;
 `;
