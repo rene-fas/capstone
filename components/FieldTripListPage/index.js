@@ -116,7 +116,9 @@ const FieldTripListPage = () => {
                   {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
                 </LinkButton>
               </CustomLink>
-
+              <RemoveButton onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
+                -
+              </RemoveButton>
               <EditButton
                 onClick={() => {
                   setEditingFieldTripId(fieldtrip.id);
@@ -128,9 +130,6 @@ const FieldTripListPage = () => {
               >
                 Edit
               </EditButton>
-              <RemoveButton onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
-                -
-              </RemoveButton>
             </ButtonGroup>
           </ListItem>
         ))}

@@ -118,10 +118,6 @@ const OutcropListPage = ({ fieldtripId }) => {
     }
   };
 
-  if (!parsedFieldtrip) {
-    return <div>Loading...</div>;
-  }
-
   const handleOutcropLinkClick = (outcropId) => {
     localStorage.setItem("currentOutcropId", outcropId);
   };
@@ -141,6 +137,7 @@ const OutcropListPage = ({ fieldtripId }) => {
                 href={`/outcroplist/${fieldtripId}/outcrop/${outcrop.id}`}
                 passHref
               >
+                {/* Wrap the LinkButton component with the Link component */}
                 <LinkButton onClick={() => handleOutcropLinkClick(outcrop.id)}>
                   {outcrop.name}
                 </LinkButton>
