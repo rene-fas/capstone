@@ -19,28 +19,32 @@ import useLocalStorageState from "use-local-storage-state";
 
 const FieldTripListPage = () => {
   const router = useRouter();
-  const [showPopup, setShowPopup] = useState(false);
+  const [showAddPopup, setShowAddPopup] = useState(false);
+  const [showEditPopup, setShowEditPopup] = useState(false);
   const [newFieldTripName, setNewFieldTripName] = useState("");
   const [newFieldTripDate, setNewFieldTripDate] = useState("");
   const [fieldtrips, setFieldtrips] = useLocalStorageState("fieldTrips", {
     defaultValue: mockFieldtrips,
   });
 
+  const [editingFieldTripId, setEditingFieldTripId] = useState(null);
+  const [editedFieldTripName, setEditedFieldTripName] = useState("");
+  const [editedFieldTripDate, setEditedFieldTripDate] = useState("");
+
   const handleAddFieldTrip = () => {
     if (newFieldTripName.trim() !== "" && newFieldTripDate.trim() !== "") {
-      // if input is not empty
-      const newDate = formatDate(newFieldTripDate); // format new date
+      const newDate = formatDate(newFieldTripDate);
 
       const newFieldTrip = {
-        id: fieldtrips.length + 1, // add new fieldtrip id
-        fieldtripname: newFieldTripName, // add new fieldtrip name
-        fieldtripdate: newDate, // add new fieldtrip date
-        outcrops: [], // add new fieldtrip outcrops
+        id: fieldtrips.length + 1,
+        fieldtripname: newFieldTripName,
+        fieldtripdate: newDate,
+        outcrops: [],
       };
-      setFieldtrips([...fieldtrips, newFieldTrip]); // update local storage with
-      setNewFieldTripName(""); // clear input
-      setNewFieldTripDate(""); // clear input
-      setShowPopup(false); // close popup
+      setFieldtrips([...fieldtrips, newFieldTrip]);
+      setNewFieldTripName("");
+      setNewFieldTripDate("");
+      setShowAddPopup(false);
     }
   };
 
@@ -49,25 +53,52 @@ const FieldTripListPage = () => {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${day}.${month}.${year}`; // return formatted date
+    return `${day}.${month}.${year}`;
   };
 
   const handleCancelAddFieldTrip = () => {
-    setNewFieldTripName(""); // clear input
-    setNewFieldTripDate(""); // clear input
-    setShowPopup(false); // close popup
+    setNewFieldTripName("");
+    setNewFieldTripDate("");
+    setShowAddPopup(false);
   };
 
-  const handleFieldTripLinkClick = (fieldTripId) => {
-    localStorage.setItem("currentFieldTripId", fieldTripId); // set currentFieldTripId in local storage
+  const handleUpdateFieldTrip = () => {
+    if (
+      editedFieldTripName.trim() !== "" &&
+      editedFieldTripDate.trim() !== ""
+    ) {
+      const updatedFieldTrips = fieldtrips.map((fieldTrip) => {
+        if (fieldTrip.id === editingFieldTripId) {
+          return {
+            ...fieldTrip,
+            fieldtripname: editedFieldTripName,
+            fieldtripdate: formatDate(editedFieldTripDate),
+          };
+        }
+        return fieldTrip;
+      });
+
+      setFieldtrips(updatedFieldTrips);
+      setEditingFieldTripId(null);
+      setEditedFieldTripName("");
+      setEditedFieldTripDate("");
+      setShowEditPopup(false);
+    }
+  };
+
+  const handleCancelEditFieldTrip = () => {
+    setEditingFieldTripId(null);
+    setEditedFieldTripName("");
+    setEditedFieldTripDate("");
+    setShowEditPopup(false);
   };
 
   const handleDeleteFieldTrip = (fieldTripId) => {
     const updatedFieldTrips = fieldtrips.filter(
-      (fieldtrip) => fieldtrip.id !== fieldTripId // filter out fieldtrips with the same id
+      (fieldtrip) => fieldtrip.id !== fieldTripId
     );
-    setFieldtrips(updatedFieldTrips); // update local storage with
-    localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips)); // updated fieldtrips
+    setFieldtrips(updatedFieldTrips);
+    localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
   };
 
   return (
@@ -80,22 +111,31 @@ const FieldTripListPage = () => {
           <ListItem key={fieldtrip.id}>
             <ButtonGroup>
               <CustomLink href={`/outcroplist/${fieldtrip.id}`} passHref>
-                <LinkButton
-                  onClick={() => handleFieldTripLinkClick(fieldtrip.id)}
-                >
+                <LinkButton>
                   {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
                 </LinkButton>
               </CustomLink>
               <RemoveButton onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
                 -
               </RemoveButton>
+              <Button
+                onClick={() => {
+                  setEditingFieldTripId(fieldtrip.id);
+                  setEditedFieldTripName(fieldtrip.fieldtripname);
+                  setEditedFieldTripDate(fieldtrip.fieldtripdate);
+                  setShowEditPopup(true);
+                }}
+                disabled={editingFieldTripId !== null}
+              >
+                Edit
+              </Button>
             </ButtonGroup>
           </ListItem>
         ))}
       </List>
-      <Button onClick={() => setShowPopup(true)}>Add Field Trip</Button>
+      <Button onClick={() => setShowAddPopup(true)}>Add Field Trip</Button>
 
-      {showPopup && (
+      {showAddPopup && !showEditPopup && (
         <Dialog>
           <h2>Add Field Trip</h2>
           <input
@@ -113,6 +153,28 @@ const FieldTripListPage = () => {
           <ButtonGroup>
             <Button onClick={handleCancelAddFieldTrip}>Cancel</Button>
             <Button onClick={handleAddFieldTrip}>Add</Button>
+          </ButtonGroup>
+        </Dialog>
+      )}
+
+      {showEditPopup && (
+        <Dialog>
+          <h2>Edit Field Trip</h2>
+          <input
+            type="text"
+            value={editedFieldTripName}
+            onChange={(e) => setEditedFieldTripName(e.target.value)}
+            placeholder="Field Trip Name"
+          />
+          <input
+            type="date"
+            value={editedFieldTripDate}
+            onChange={(e) => setEditedFieldTripDate(e.target.value)}
+            placeholder="Select a date"
+          />
+          <ButtonGroup>
+            <Button onClick={handleCancelEditFieldTrip}>Cancel</Button>
+            <Button onClick={handleUpdateFieldTrip}>Update</Button>
           </ButtonGroup>
         </Dialog>
       )}
