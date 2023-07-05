@@ -75,14 +75,10 @@ export const LinkButton = styled(Button)`
 `;
 
 export const RemoveButton = styled(Button)`
-  flex-basis: 12.5%;
+  flex-basis: 25%;
 `;
 
 export const CustomLink = styled(Link)`
   text-decoration: none;
   flex-basis: 75%;
-`;
-
-export const EditButton = styled(Button)`
-  flex-basis: 12.5%;
 `;
