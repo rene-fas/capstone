@@ -57,6 +57,14 @@ const FieldTripListPage = () => {
     localStorage.setItem("currentFieldTripId", fieldTripId);
   };
 
+  const handleDeleteFieldTrip = (fieldTripId) => {
+    const updatedFieldTrips = fieldtrips.filter(
+      (fieldtrip) => fieldtrip.id !== fieldTripId
+    );
+    setFieldtrips(updatedFieldTrips);
+    localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
+  };
+
   return (
     <Container>
       <Header>
@@ -70,6 +78,9 @@ const FieldTripListPage = () => {
                 {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
               </Button>
             </Link>
+            <Button onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
+              Delete
+            </Button>
           </ListItem>
         ))}
       </List>
