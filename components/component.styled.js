@@ -47,6 +47,14 @@ export const Header = styled.header`
   z-index: 1;
 `;
 
-export const Dialog = styled.dialog`
-  margin-top: 120px;
+export const Dialog = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: solid black;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  z-index: 2;
 `;
