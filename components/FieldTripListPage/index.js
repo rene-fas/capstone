@@ -9,6 +9,7 @@ import {
   ListItem,
   Button,
   Dialog,
+  ButtonGroup,
 } from "../component.styled";
 import { fieldtrips as mockFieldtrips } from "../../db/mocked/index.js";
 import useLocalStorageState from "use-local-storage-state";
@@ -73,14 +74,16 @@ const FieldTripListPage = () => {
       <List>
         {fieldtrips.map((fieldtrip) => (
           <ListItem key={fieldtrip.id}>
-            <Link href={`/outcroplist/${fieldtrip.id}`} passHref>
-              <Button onClick={() => handleFieldTripLinkClick(fieldtrip.id)}>
-                {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
+            <ButtonGroup>
+              <Link href={`/outcroplist/${fieldtrip.id}`} passHref>
+                <Button onClick={() => handleFieldTripLinkClick(fieldtrip.id)}>
+                  {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
+                </Button>
+              </Link>
+              <Button onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
+                -
               </Button>
-            </Link>
-            <Button onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
-              Delete
-            </Button>
+            </ButtonGroup>
           </ListItem>
         ))}
       </List>
@@ -101,8 +104,10 @@ const FieldTripListPage = () => {
             onChange={(e) => setNewFieldTripDate(e.target.value)}
             placeholder="Select a date"
           />
-          <Button onClick={handleCancelAddFieldTrip}>Cancel</Button>
-          <Button onClick={handleAddFieldTrip}>Add</Button>
+          <ButtonGroup>
+            <Button onClick={handleCancelAddFieldTrip}>Cancel</Button>
+            <Button onClick={handleAddFieldTrip}>Add</Button>
+          </ButtonGroup>
         </Dialog>
       )}
     </Container>

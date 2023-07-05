@@ -9,6 +9,7 @@ import {
   ListItem,
   Button,
   Dialog,
+  ButtonGroup,
 } from "../component.styled";
 
 const OutcropListPage = ({ fieldtripId }) => {
@@ -77,7 +78,9 @@ const OutcropListPage = ({ fieldtripId }) => {
     setShowPopup(false);
   };
 
-  const handleDeleteOutcrop = (outcropId) => {
+  const handleDeleteOutcrop = (outcropId, event) => {
+    event.preventDefault(); // Prevent the default link behavior
+
     try {
       const storedFieldTrips = JSON.parse(localStorage.getItem("fieldTrips"));
 
@@ -130,21 +133,22 @@ const OutcropListPage = ({ fieldtripId }) => {
       <List>
         {parsedFieldtrip.outcrops.map((outcrop) => (
           <ListItem key={outcrop.id}>
-            <Link
-              href={`/outcroplist/${fieldtripId}/outcrop/${outcrop.id}`}
-              passHref
-            >
+            <ButtonGroup>
               <Button onClick={() => handleOutcropLinkClick(outcrop.id)}>
                 {outcrop.name}
               </Button>
-            </Link>
-            <Button onClick={() => handleDeleteOutcrop(outcrop.id)}>
-              Delete
-            </Button>
+              <Button onClick={(e) => handleDeleteOutcrop(outcrop.id, e)}>
+                -
+              </Button>
+            </ButtonGroup>
           </ListItem>
         ))}
       </List>
-      <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
+      <ButtonGroup>
+        {" "}
+        <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
+        <Button onClick={handleBack}>Go Back</Button>
+      </ButtonGroup>
 
       {showPopup && (
         <Dialog>
@@ -159,8 +163,6 @@ const OutcropListPage = ({ fieldtripId }) => {
           <Button onClick={handleAddOutcrop}>Add</Button>
         </Dialog>
       )}
-
-      <Button onClick={handleBack}>Go Back</Button>
     </Container>
   );
 };

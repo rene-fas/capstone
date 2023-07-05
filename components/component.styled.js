@@ -5,25 +5,19 @@ export const Container = styled.div`
   margin: 0 auto;
   padding: 20px;
   padding-top: 100px;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  align-items: center;
 `;
 
 export const Button = styled.button`
-  display: block;
-  width: 100%;
   padding: 10px;
   background-color: #337ab7;
   color: #fff;
   border: none;
   border-radius: 4px;
-  margin-bottom: 10px;
   cursor: pointer;
 `;
 
 export const List = styled.ul`
-  margin-top: 5px;
+  margin-top: 50px;
   list-style-type: none;
   padding: 2px;
   border: 1px solid #ccc;
@@ -32,6 +26,9 @@ export const List = styled.ul`
 
 export const ListItem = styled.li`
   padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Headline = styled.h1`
@@ -57,4 +54,10 @@ export const Dialog = styled.div`
   padding: 20px;
   border-radius: 4px;
   z-index: 2;
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
