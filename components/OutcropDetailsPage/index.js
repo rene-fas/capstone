@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { capitalizeFirstLetter } from "../../helper/functions";
 import { useRouter } from "next/router";
-
-import { Form, FormField, Input, TextArea } from "./OutcropDetailsPage.styled";
+import {
+  Form,
+  FormField,
+  Input,
+  TextArea,
+  InputRow,
+  Label,
+  MultilineField,
+} from "./OutcropDetailsPage.styled";
 
 import {
   Container,
@@ -14,35 +21,44 @@ import {
 } from "../component.styled";
 
 const OutcropDetailsPage = () => {
-  const router = useRouter();
-  const [outcropTitle, setOutcropTitle] = useState("");
   const [fieldTripId, setFieldTripId] = useState("");
   const [outcropId, setOutcropId] = useState("");
+  const [formState, setFormState] = useState({});
+  const [currentOutcrop, setCurrentOutcrop] = useState({});
+  const [submittedData, setSubmittedData] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     try {
-      const storedSubmittedData = getStoredSubmittedData();
-      const currentFieldTripId = storedSubmittedData.currentFieldTripId;
+      const storedFieldTrips = getStoredFieldTrips();
+      const currentFieldTripId = localStorage.getItem("currentFieldTripId");
+      const currentOutcropId = localStorage.getItem("currentOutcropId");
+      setFieldTripId(currentFieldTripId);
+      const outcropIdFromStorage = parseInt(currentOutcropId);
+      const currentFieldTrip = storedFieldTrips.find(
+        (fieldTrip) => fieldTrip.id === parseInt(currentFieldTripId)
+      );
 
-      if (currentFieldTripId) {
-        const currentFieldTrip = storedSubmittedData.fieldTrips.find(
-          (fieldTrip) => fieldTrip.id === currentFieldTripId
+      const outcrop =
+        currentFieldTrip &&
+        currentFieldTrip.outcrops &&
+        currentFieldTrip.outcrops.find(
+          (outcrop) => outcrop.id === parseInt(currentOutcropId)
         );
 
-        if (currentFieldTrip && currentFieldTrip.outcrops.length > 0) {
-          const currentOutcropId = currentFieldTrip.outcrops[0].id;
-          const currentOutcrop = currentFieldTrip.outcrops.find(
-            (outcrop) => outcrop.id === currentOutcropId
-          );
-          console.log(currentOutcrop);
-          if (currentOutcrop) {
-            const currentOutcropTitle = currentOutcrop.name;
+      setCurrentOutcrop(outcrop);
 
-            setFieldTripId(currentFieldTripId);
-            setOutcropId(currentOutcropId);
-            setOutcropTitle(currentOutcropTitle);
-          }
-        }
+      if (outcropIdFromStorage) {
+        setOutcropId(outcropIdFromStorage);
+      } else {
+        console.error(
+          "Invalid outcropId stored in local storage:",
+          currentOutcropId
+        );
+      }
+
+      if (outcrop && outcrop.details) {
+        setSubmittedData(outcrop.details);
       }
     } catch (error) {
       console.error(
@@ -50,37 +66,39 @@ const OutcropDetailsPage = () => {
         error
       );
     }
-  }, [setFieldTripId, setOutcropId, setOutcropTitle]);
+  }, []);
 
   const handleBack = () => {
     router.back();
   };
 
   const dataKeys = [
-    "gesteinsart",
-    "gesteinsklasse",
-    "schichtung",
-    "faltung",
-    "mineralien",
-    "allgemeines",
-    "interpretation",
+    "Gesteinsart",
+    "Gesteinsklasse",
+    "Schichtung",
+    "Faltung",
+    "Mineralien",
+    "Allgemeines",
+    "Interpretation",
   ];
 
-  const getStoredSubmittedData = () => {
-    if (typeof window !== "undefined") {
-      const storedData = localStorage.getItem("submittedData");
-      return storedData ? JSON.parse(storedData) : {};
-    }
-    return {};
-  };
-
-  const setStoredSubmittedData = (data) => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("submittedData", JSON.stringify(data));
+  const getStoredFieldTrips = () => {
+    try {
+      const storedData = localStorage.getItem("fieldTrips");
+      return storedData ? JSON.parse(storedData) : [];
+    } catch (error) {
+      console.error("Error parsing stored field trips data:", error);
+      return [];
     }
   };
 
-  const [formState, setFormState] = useState({});
+  const setStoredFieldTrips = (data) => {
+    try {
+      localStorage.setItem("fieldTrips", JSON.stringify(data));
+    } catch (error) {
+      console.error("Error setting stored field trips data:", error);
+    }
+  };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -91,19 +109,37 @@ const OutcropDetailsPage = () => {
       newData[key] = formData.get(key);
     }
 
-    const storedSubmittedData = getStoredSubmittedData();
-    const dataForFieldTrip = storedSubmittedData[fieldTripId] || {};
-    const dataForOutcropId = dataForFieldTrip[outcropId] || [];
-    const updatedData = {
-      ...storedSubmittedData,
-      [fieldTripId]: {
-        ...dataForFieldTrip,
-        [outcropId]: [...dataForOutcropId, newData],
-      },
-    };
-    setStoredSubmittedData(updatedData);
+    try {
+      const storedFieldTrips = getStoredFieldTrips();
+      const updatedFieldTrips = storedFieldTrips.map((fieldTrip) => {
+        if (fieldTrip.id === parseInt(fieldTripId)) {
+          const updatedOutcrops = fieldTrip.outcrops.map((outcrop) => {
+            if (outcrop.id === parseInt(outcropId)) {
+              const updatedDetails = outcrop.details
+                ? [...outcrop.details, newData]
+                : [newData];
+              return {
+                ...outcrop,
+                details: updatedDetails,
+              };
+            }
+            return outcrop;
+          });
 
-    setFormState({});
+          return {
+            ...fieldTrip,
+            outcrops: updatedOutcrops,
+          };
+        }
+        return fieldTrip;
+      });
+
+      setStoredFieldTrips(updatedFieldTrips);
+      setSubmittedData((prevSubmittedData) => [...prevSubmittedData, newData]);
+      setFormState({});
+    } catch (error) {
+      console.error("Error updating stored field trips data:", error);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -114,19 +150,17 @@ const OutcropDetailsPage = () => {
     }));
   };
 
-  const storedSubmittedData = getStoredSubmittedData();
-
   return (
     <>
       <Header>
-        <Headline>{outcropTitle}</Headline>
+        <Headline>{currentOutcrop ? currentOutcrop.name : ""}</Headline>
       </Header>
       <Container>
         <Form onSubmit={handleFormSubmit}>
           {dataKeys.map((key) => (
             <FormField key={key}>
-              <label htmlFor={key}>{capitalizeFirstLetter(key)}:</label>
-              {key === "allgemeines" || key === "interpretation" ? (
+              <Label htmlFor={key}>{capitalizeFirstLetter(key)}:</Label>
+              {key === "Allgemeines" || key === "Interpretation" ? (
                 <TextArea
                   id={key}
                   name={key}
@@ -150,27 +184,22 @@ const OutcropDetailsPage = () => {
         </Form>
 
         {/* Submitted data */}
-        {storedSubmittedData &&
-          storedSubmittedData[fieldTripId] &&
-          storedSubmittedData[fieldTripId][outcropId] &&
-          storedSubmittedData[fieldTripId][outcropId].length > 0 && (
-            <List>
-              {storedSubmittedData[fieldTripId][outcropId].map(
-                (data, index) => (
-                  <ListItem key={index}>
-                    <List>
-                      {dataKeys.map((key) => (
-                        <ListItem key={key}>
-                          <strong>{capitalizeFirstLetter(key)}:</strong>{" "}
-                          {data[key]}
-                        </ListItem>
-                      ))}
-                    </List>
-                  </ListItem>
-                )
-              )}
-            </List>
-          )}
+        {submittedData.length > 0 && (
+          <List>
+            {submittedData.map((data, index) => (
+              <ListItem key={index}>
+                <List>
+                  {dataKeys.map((key) => (
+                    <ListItem key={key}>
+                      <strong>{capitalizeFirstLetter(key)}:</strong> {data[key]}
+                    </ListItem>
+                  ))}
+                </List>
+              </ListItem>
+            ))}
+          </List>
+        )}
+
         <Button onClick={handleBack}>Go Back</Button>
       </Container>
     </>
