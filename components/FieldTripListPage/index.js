@@ -37,16 +37,27 @@ const FieldTripListPage = () => {
   };
 
   const handleAddFieldTrip = () => {
-    //handle add field trip which happens when user clicks on add button
+    // handle add field trip which happens when user clicks on add button
     if (newFieldTripName.trim() !== "" && newFieldTripDate.trim() !== "") {
       const newDate = formatDate(newFieldTripDate);
+      let newFieldTrip;
 
-      const newFieldTrip = {
-        id: fieldtrips.length + 1, // added fieldtrip id is dependant on the length of fieldtrips
-        fieldtripname: newFieldTripName, // added fieldtrip name from input
-        fieldtripdate: newDate, // added fieldtrip date from input
-        outcrops: [],
-      };
+      if (fieldtrips.length > 0) {
+        newFieldTrip = {
+          id: fieldtrips[fieldtrips.length - 1].id + 1, // added fieldtrip id is dependent on the length of fieldtrips
+          fieldtripname: newFieldTripName, // added fieldtrip name from input
+          fieldtripdate: newDate, // added fieldtrip date from input
+          outcrops: [],
+        };
+      } else {
+        newFieldTrip = {
+          id: 1, // set the new fieldtrip id as 1 if fieldtrips array is empty
+          fieldtripname: newFieldTripName, // added fieldtrip name from input
+          fieldtripdate: newDate, // added fieldtrip date from input
+          outcrops: [],
+        };
+      }
+
       setFieldtrips([...fieldtrips, newFieldTrip]); // add new fieldtrip to fieldtrips array in local storage
       setNewFieldTripName(""); // clear input field
       setNewFieldTripDate(""); // clear input field
@@ -176,13 +187,13 @@ const FieldTripListPage = () => {
           <input
             type="text"
             value={editedFieldTripName}
-            onChange={(e) => setEditedFieldTripName(e.target.value)}
+            onChange={(event) => setEditedFieldTripName(event.target.value)}
             placeholder="Field Trip Name"
           />
           <input
             type="date"
             value={editedFieldTripDate}
-            onChange={(e) => setEditedFieldTripDate(e.target.value)}
+            onChange={(event) => setEditedFieldTripDate(event.target.value)}
             placeholder="Select a date"
           />
           <ButtonGroup>

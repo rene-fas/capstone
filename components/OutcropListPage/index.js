@@ -48,27 +48,34 @@ const OutcropListPage = ({ fieldtripId }) => {
     // Go back to previous page
     router.back();
   };
-
   const handleAddOutcrop = () => {
     // Add new outcrop to current field trip
     if (newOutcropTitle.trim() !== "") {
       // Check if new outcrop title is not empty
       try {
         const fieldTrips = JSON.parse(localStorage.getItem("fieldTrips"));
-
         const currentFieldTrip = fieldTrips.find(
           // Find current field trip
           (fieldtrip) => fieldtrip.id === currentFieldTripId
         );
+        let newOutcrop; // Declare newOutcrop variable
+        if (currentFieldTrip.outcrops.length > 0) {
+          // Check if current outcrops array is not empty if it is not do a calculation for the id
+          newOutcrop = {
+            // Create new outcrop with following properties
+            id:
+              currentFieldTrip.outcrops[currentFieldTrip.outcrops.length - 1]
+                .id + 1,
+            name: newOutcropTitle,
+            details: [],
+          };
+        } else {
+          // If current outcrop is empty just use id 1
+          newOutcrop = { id: 1, name: newOutcropTitle, details: [] };
+        }
+        const updatedOutcrops = [...currentFieldTrip.outcrops, newOutcrop]; // Add new outcrop to current field trip using spread syntax
+        currentFieldTrip.outcrops = updatedOutcrops; // Update the outcrops array in the current field trip
 
-        const newOutcrop = {
-          // Create new outcrop
-          id: currentFieldTrip.outcrops.length + 1,
-          name: newOutcropTitle,
-          details: [],
-        };
-
-        currentFieldTrip.outcrops.push(newOutcrop); // Add new outcrop to current field trip
         localStorage.setItem("fieldTrips", JSON.stringify(fieldTrips));
 
         setParsedFieldtrip((prevFieldtrip) => ({
