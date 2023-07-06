@@ -52,20 +52,23 @@ const OutcropListPage = ({ fieldtripId }) => {
   const handleAddOutcrop = () => {
     // Add new outcrop to current field trip
     if (newOutcropTitle.trim() !== "") {
+      // Check if new outcrop title is not empty
       try {
         const fieldTrips = JSON.parse(localStorage.getItem("fieldTrips"));
 
         const currentFieldTrip = fieldTrips.find(
+          // Find current field trip
           (fieldtrip) => fieldtrip.id === currentFieldTripId
         );
 
         const newOutcrop = {
+          // Create new outcrop
           id: currentFieldTrip.outcrops.length + 1,
           name: newOutcropTitle,
           details: [],
         };
 
-        currentFieldTrip.outcrops.push(newOutcrop);
+        currentFieldTrip.outcrops.push(newOutcrop); // Add new outcrop to current field trip
         localStorage.setItem("fieldTrips", JSON.stringify(fieldTrips));
 
         setParsedFieldtrip((prevFieldtrip) => ({
@@ -81,6 +84,7 @@ const OutcropListPage = ({ fieldtripId }) => {
   };
 
   const handleCancelAddOutcrop = () => {
+    //close popup on clicking cancel button
     setNewOutcropTitle("");
     setShowPopup(false);
   };
@@ -92,6 +96,7 @@ const OutcropListPage = ({ fieldtripId }) => {
       const storedFieldTrips = JSON.parse(localStorage.getItem("fieldTrips"));
 
       const updatedFieldTrips = storedFieldTrips.map((fieldTrip) => {
+        // Update field trip with outcrop removed
         if (fieldTrip.id === parseInt(currentFieldTripId)) {
           const updatedOutcrops = fieldTrip.outcrops.filter(
             (outcrop) => outcrop.id !== parseInt(outcropId)
@@ -123,8 +128,9 @@ const OutcropListPage = ({ fieldtripId }) => {
   };
 
   const handleEditOutcrop = (outcropId) => {
-    setEditingOutcropId(outcropId);
+    setEditingOutcropId(outcropId); // Set editing outcrop id
     const outcrop = parsedFieldtrip.outcrops.find(
+      // get the fitting outcrop to edit
       (outcrop) => outcrop.id === outcropId
     );
     setEditedOutcropTitle(outcrop.name);
@@ -138,7 +144,9 @@ const OutcropListPage = ({ fieldtripId }) => {
 
         const updatedFieldTrips = storedFieldTrips.map((fieldTrip) => {
           if (fieldTrip.id === parseInt(currentFieldTripId)) {
+            // If current field trip is affected
             const updatedOutcrops = fieldTrip.outcrops.map((outcrop) => {
+              //edit in local storage
               if (outcrop.id === editingOutcropId) {
                 return {
                   ...outcrop,
@@ -149,7 +157,7 @@ const OutcropListPage = ({ fieldtripId }) => {
             });
 
             return {
-              ...fieldTrip,
+              ...fieldTrip, // Update field trip with outcrop edited
               outcrops: updatedOutcrops,
             };
           }
@@ -185,11 +193,11 @@ const OutcropListPage = ({ fieldtripId }) => {
   };
 
   if (!parsedFieldtrip) {
-    return <div>Loading...</div>;
+    return <div>Something went terribly wrong</div>;
   }
 
   const handleOutcropLinkClick = (outcropId) => {
-    localStorage.setItem("currentOutcropId", outcropId);
+    localStorage.setItem("currentOutcropId", outcropId); // Set current outcrop id for navigation
   };
 
   return (
