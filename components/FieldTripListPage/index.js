@@ -32,20 +32,25 @@ const FieldTripListPage = () => {
   const [editedFieldTripName, setEditedFieldTripName] = useState("");
   const [editedFieldTripDate, setEditedFieldTripDate] = useState("");
 
+  const handleFieldTripLinkClick = (fieldTripId) => {
+    localStorage.setItem("currentFieldTripId", fieldTripId); // set currentFieldTripId in local storage for navigation
+  };
+
   const handleAddFieldTrip = () => {
+    //handle add field trip which happens when user clicks on add button
     if (newFieldTripName.trim() !== "" && newFieldTripDate.trim() !== "") {
       const newDate = formatDate(newFieldTripDate);
 
       const newFieldTrip = {
-        id: fieldtrips.length + 1,
-        fieldtripname: newFieldTripName,
-        fieldtripdate: newDate,
+        id: fieldtrips.length + 1, // added fieldtrip id is dependant on the length of fieldtrips
+        fieldtripname: newFieldTripName, // added fieldtrip name from input
+        fieldtripdate: newDate, // added fieldtrip date from input
         outcrops: [],
       };
-      setFieldtrips([...fieldtrips, newFieldTrip]);
-      setNewFieldTripName("");
-      setNewFieldTripDate("");
-      setShowAddPopup(false);
+      setFieldtrips([...fieldtrips, newFieldTrip]); // add new fieldtrip to fieldtrips array in local storage
+      setNewFieldTripName(""); // clear input field
+      setNewFieldTripDate(""); // clear input field
+      setShowAddPopup(false); // close popup
     }
   };
 
@@ -58,12 +63,14 @@ const FieldTripListPage = () => {
   };
 
   const handleCancelAddFieldTrip = () => {
+    // close popup when user clicks on cancel button
     setNewFieldTripName("");
     setNewFieldTripDate("");
     setShowAddPopup(false);
   };
 
   const handleUpdateFieldTrip = () => {
+    // handle update field trip which happens when user clicks on update button to update fieldtrips array in local storage
     if (
       editedFieldTripName.trim() !== "" &&
       editedFieldTripDate.trim() !== ""
@@ -79,7 +86,7 @@ const FieldTripListPage = () => {
         return fieldTrip;
       });
 
-      setFieldtrips(updatedFieldTrips);
+      setFieldtrips(updatedFieldTrips); // update fieldtrips array in local storage with the inpuut values
       setEditingFieldTripId(null);
       setEditedFieldTripName("");
       setEditedFieldTripDate("");
@@ -88,6 +95,7 @@ const FieldTripListPage = () => {
   };
 
   const handleCancelEditFieldTrip = () => {
+    // close popup when user clicks on cancel button
     setEditingFieldTripId(null);
     setEditedFieldTripName("");
     setEditedFieldTripDate("");
@@ -95,11 +103,13 @@ const FieldTripListPage = () => {
   };
 
   const handleDeleteFieldTrip = (fieldTripId) => {
+    // handle delete field trip which happens when user clicks on delete button
     const updatedFieldTrips = fieldtrips.filter(
+      //filter fieldtrips array in local storage to remove fieldTripId
       (fieldtrip) => fieldtrip.id !== fieldTripId
     );
     setFieldtrips(updatedFieldTrips);
-    localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips));
+    localStorage.setItem("fieldTrips", JSON.stringify(updatedFieldTrips)); // update fieldtrips array in local storage with the updated fieldtrips
   };
 
   return (
@@ -112,7 +122,9 @@ const FieldTripListPage = () => {
           <ListItem key={fieldtrip.id}>
             <ButtonGroup>
               <CustomLink href={`/outcroplist/${fieldtrip.id}`} passHref>
-                <LinkButton>
+                <LinkButton
+                  onClick={() => handleFieldTripLinkClick(fieldtrip.id)}
+                >
                   {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
                 </LinkButton>
               </CustomLink>

@@ -84,6 +84,7 @@ const OutcropDetailsPage = () => {
   ];
 
   const getStoredFieldTrips = () => {
+    //function to get stored field trips from local storage
     try {
       const storedData = localStorage.getItem("fieldTrips"); // get stored field trips from local storage
       return storedData ? JSON.parse(storedData) : []; // parse stored field trips data
@@ -94,8 +95,9 @@ const OutcropDetailsPage = () => {
   };
 
   const setStoredFieldTrips = (data) => {
+    //function to set stored field trips in local storage
     try {
-      localStorage.setItem("fieldTrips", JSON.stringify(data)); // set stored field trips
+      localStorage.setItem("fieldTrips", JSON.stringify(data));
     } catch (error) {
       console.error("Error setting stored field trips data:", error);
     }
