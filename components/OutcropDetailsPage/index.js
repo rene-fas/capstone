@@ -64,7 +64,7 @@ const OutcropDetailsPage = () => {
     "Mineralien",
     "Allgemeines",
     "Interpretation",
-  ];
+  ]; // Data keys for the outcrop details page
 
   const getStoredFieldTrips = () => {
     try {
