@@ -4,6 +4,7 @@ import Link from "next/link";
 export const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
+  margin-top: 50px;
   padding: 20px;
   padding-top: 100px;
   display: grid;
@@ -75,10 +76,14 @@ export const LinkButton = styled(Button)`
 `;
 
 export const RemoveButton = styled(Button)`
-  flex-basis: 25%;
+  flex-basis: 12.5%;
 `;
 
 export const CustomLink = styled(Link)`
   text-decoration: none;
   flex-basis: 75%;
+`;
+
+export const EditButton = styled(Button)`
+  flex-basis: 12.5%;
 `;
