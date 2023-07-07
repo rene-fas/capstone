@@ -1,24 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { capitalizeFirstLetter } from "../../helper/functions";
 import { useRouter } from "next/router";
-import {
-  Form,
-  FormField,
-  Input,
-  TextArea,
-  InputRow,
-  Label,
-  MultilineField,
-} from "./OutcropDetailsPage.styled";
+import { TextArea, Label } from "./OutcropDetailsPage.styled";
 
-import {
-  Container,
-  Headline,
-  Header,
-  List,
-  ListItem,
-  Button,
-} from "../component.styled";
+import { Container, Headline, Header, Button } from "../component.styled";
 
 const OutcropDetailsPage = () => {
   const [fieldTripId, setFieldTripId] = useState("");
@@ -32,17 +17,17 @@ const OutcropDetailsPage = () => {
       const storedFieldTrips = getStoredFieldTrips();
       const currentFieldTripId = localStorage.getItem("currentFieldTripId");
       const currentOutcropId = localStorage.getItem("currentOutcropId");
-      setFieldTripId(currentFieldTripId);
-      const outcropIdFromStorage = parseInt(currentOutcropId);
+      setFieldTripId(currentFieldTripId); // set the fieldTripId we are working with from local storage
+      const outcropIdFromStorage = parseInt(currentOutcropId); // set the outcropId we are working with from local storage
       const currentFieldTrip = storedFieldTrips.find(
-        (fieldTrip) => fieldTrip.id === parseInt(currentFieldTripId)
+        (fieldTrip) => fieldTrip.id === parseInt(currentFieldTripId) // find the field trip we are working with
       );
 
       const outcrop =
         currentFieldTrip &&
         currentFieldTrip.outcrops &&
         currentFieldTrip.outcrops.find(
-          (outcrop) => outcrop.id === parseInt(currentOutcropId)
+          (outcrop) => outcrop.id === parseInt(currentOutcropId) // find the outcrop we are working with
         );
 
       setCurrentOutcrop(outcrop);
