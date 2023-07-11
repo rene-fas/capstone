@@ -5,6 +5,9 @@ import { TextArea, Label } from "./OutcropDetailsPage.styled";
 
 import { Container, Headline, Header, Button } from "../component.styled";
 
+import ImageList from "../ImageList";
+import ImageUploadForm from "../ImageUploadForm";
+
 const OutcropDetailsPage = () => {
   const [fieldTripId, setFieldTripId] = useState("");
   const [outcropId, setOutcropId] = useState("");
@@ -147,7 +150,8 @@ const OutcropDetailsPage = () => {
             }
           </div>
         ))}
-
+        <ImageList />
+        <ImageUploadForm />
         <Button onClick={handleBack}>Go Back</Button>
       </Container>
     </>
