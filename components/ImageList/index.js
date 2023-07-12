@@ -12,7 +12,7 @@ export default function ImageList() {
     <StyledList>
       {data.resources.map((image) => (
         <StyledListItem key={image.asset_id}>
-          <Link href={`/images/${image.public_id}`} key={image.asset_id}>
+          <Link href={image.url}>
             <StyledImage
               src={image.url}
               layout="responsive"
@@ -21,15 +21,6 @@ export default function ImageList() {
               alt={`Image-Id: ${image.public_id}`}
             />
           </Link>
-          <p>
-            {image.tags.length > 0 ? (
-              image.tags.map((tag, index) => (
-                <StyledTag key={`tag-${index}`}>{tag}</StyledTag>
-              ))
-            ) : (
-              <i>untagged</i>
-            )}
-          </p>
         </StyledListItem>
       ))}
     </StyledList>

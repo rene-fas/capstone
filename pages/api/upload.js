@@ -1,5 +1,4 @@
 import process from "node:process";
-
 import cloudinary from "cloudinary";
 import formidable from "formidable";
 
@@ -12,10 +11,11 @@ export const config = {
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export default async function handler(request, response) {
+export default async function handler(request, response, filepathprop) {
+  const filepath = filepathprop;
   switch (request.method) {
     case "POST":
       await new Promise((resolve, reject) => {
