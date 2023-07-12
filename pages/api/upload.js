@@ -14,8 +14,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export default async function handler(request, response, filepathprop) {
-  const filepath = filepathprop;
+export default async function handler(request, response, filepath) {
+  const { currentOutcropId, currentFieldTripId } = request.query;
+
   switch (request.method) {
     case "POST":
       await new Promise((resolve, reject) => {
@@ -25,10 +26,11 @@ export default async function handler(request, response, filepathprop) {
             reject(error);
           } else {
             const { file } = files;
-
             const { newFilename, filepath } = file;
+            const folderName = `${currentFieldTripId}_${currentOutcropId}`;
             const result = await cloudinary.v2.uploader.upload(filepath, {
               public_id: newFilename,
+              folder: folderName,
             });
             console.log("API: response from cloudinary: ", result);
             response.status(201).json(result);

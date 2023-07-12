@@ -1,10 +1,30 @@
-import useSWR from "swr";
+// Client-side code (ImageList.js)
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import Link from "next/link";
 
 export default function ImageList() {
-  const { data, error } = useSWR("/api/images");
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const currentFieldTripId = localStorage.getItem("currentFieldTripId");
+      const currentOutcropId = localStorage.getItem("currentOutcropId");
+      try {
+        const response = await fetch(
+          `/api/images?currentFieldTripId=${currentFieldTripId}&currentOutcropId=${currentOutcropId}`
+        );
+        const data = await response.json();
+        setData(data);
+      } catch (error) {
+        setError(error);
+      }
+    }
+    fetchData();
+  }, []);
+
   if (error) return <div>failed to load</div>;
   if (!data || !data.resources) return <div>loading...</div>;
 

@@ -14,10 +14,16 @@ cloudinary.config({
 });
 
 export default async function handler(request, response) {
+  const { currentFieldTripId, currentOutcropId } = request.query;
+  const folderName = `${currentFieldTripId}_${currentOutcropId}`;
+
   if (request.method === "GET") {
     try {
       console.log("Fetching images...");
-      const result = await cloudinary.v2.search.max_results(10).execute();
+      const result = await cloudinary.v2.search
+        .expression(`folder:${folderName}`)
+        .max_results(10)
+        .execute();
       console.log("Images fetched successfully:", result);
       response.status(200).json(result);
     } catch (error) {
