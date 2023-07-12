@@ -13,6 +13,8 @@ const OutcropDetailsPage = () => {
   const [outcropId, setOutcropId] = useState("");
   const [currentOutcrop, setCurrentOutcrop] = useState({});
   const [editedData, setEditedData] = useState({});
+  const [uploadedImagesCount, setUploadedImagesCount] = useState(0);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -150,8 +152,12 @@ const OutcropDetailsPage = () => {
             }
           </div>
         ))}
-        <ImageList />
-        <ImageUploadForm />
+        <ImageList key={uploadedImagesCount} />
+
+        <ImageUploadForm
+          onUpload={() => setUploadedImagesCount((count) => count + 1)}
+        />
+
         <Button onClick={handleBack}>Go Back</Button>
       </Container>
     </>

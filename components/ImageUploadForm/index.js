@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
 
-function ImageUploadForm() {
+function ImageUploadForm({ onUpload }) {
   const { mutate } = useSWR("/api/images/");
   const [uploadStatus, setUploadStatus] = useState("");
   const [error, setError] = useState(undefined);
@@ -23,8 +23,10 @@ function ImageUploadForm() {
         }
       );
       if (response.status === 201) {
-        mutate();
         setUploadStatus("Upload complete!");
+        setTimeout(() => {
+          onUpload();
+        }, 1000); // 1 second delay
       }
     } catch (error) {
       setError(error);
