@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 
 function ImageUploadForm({ onUpload }) {
   const { mutate } = useSWR("/api/images/");
@@ -25,6 +25,7 @@ function ImageUploadForm({ onUpload }) {
       if (response.status === 201) {
         setTimeout(() => {
           setUploadStatus("Upload complete!");
+          mutate("/api/images"); // Trigger revalidation of the image list data
           onUpload();
         }, 3000); // 3 second delay
       }
