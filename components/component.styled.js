@@ -39,7 +39,7 @@ export const ListItem = styled.li`
   align-items: center;
 `;
 
-export const Headline = styled.h1`
+export const Headline = styled.h2`
   text-align: center;
 `;
 
