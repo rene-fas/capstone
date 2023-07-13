@@ -38,7 +38,7 @@ function ImageUploadForm({ onUpload }) {
     <>
       <h2>Image Upload</h2>
       <Form onSubmit={submitImage}>
-        <input type="file" name="file" />
+        <input type="file" name="file" required />
         <StyledButton type="submit">Upload</StyledButton>
         <p>{uploadStatus}</p>
         {error && <p>{error.message}</p>}

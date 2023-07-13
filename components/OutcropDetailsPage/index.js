@@ -8,6 +8,13 @@ import { Container, Headline, Header, Button } from "../component.styled";
 import ImageList from "../ImageList";
 import ImageUploadForm from "../ImageUploadForm";
 
+import dynamic from "next/dynamic";
+
+// Import Leaflet and react-leaflet components dynamically
+const LeafletMap = dynamic(() => import("../LeafletMap"), {
+  ssr: false, // Disable server-side rendering
+});
+
 const OutcropDetailsPage = () => {
   const [fieldTripId, setFieldTripId] = useState("");
   const [outcropId, setOutcropId] = useState("");
@@ -152,6 +159,7 @@ const OutcropDetailsPage = () => {
             }
           </div>
         ))}
+        <LeafletMap />
         <ImageList key={uploadedImagesCount} />
 
         <ImageUploadForm
