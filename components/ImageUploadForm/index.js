@@ -23,10 +23,10 @@ function ImageUploadForm({ onUpload }) {
         }
       );
       if (response.status === 201) {
-        setUploadStatus("Upload complete!");
         setTimeout(() => {
+          setUploadStatus("Upload complete!");
           onUpload();
-        }, 1000); // 1 second delay
+        }, 3000); // 3 second delay
       }
     } catch (error) {
       setError(error);

@@ -1,4 +1,3 @@
-// Client-side code (ImageList.js)
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styled from "styled-components";
@@ -11,7 +10,7 @@ export default function ImageList() {
   useEffect(() => {
     async function fetchData() {
       const currentFieldTripId = localStorage.getItem("currentFieldTripId");
-      const currentOutcropId = localStorage.getItem("currentOutcropId");
+      const currentOutcropId = localStorage.getItem("currentOutcropId"); // needed to display the images from the current outcrop and fieldtrip
       try {
         const response = await fetch(
           `/api/images?currentFieldTripId=${currentFieldTripId}&currentOutcropId=${currentOutcropId}`
