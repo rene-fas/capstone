@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR, { mutate } from "swr";
+import "leaflet/dist/leaflet.css";
 
 function ImageUploadForm({ onUpload }) {
   const { mutate } = useSWR("/api/images/");
