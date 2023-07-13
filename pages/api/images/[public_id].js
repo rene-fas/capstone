@@ -21,7 +21,6 @@ export default async function handler(request, response) {
         .expression(`public_id:${public_id}`)
         .with_field("tags")
         .execute();
-      console.log("Images fetched successfully:", result);
       response.status(200).json(result);
     } catch (error) {
       console.error("Error fetching images:", error);

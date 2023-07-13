@@ -19,12 +19,10 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     try {
-      console.log("Fetching images...");
       const result = await cloudinary.v2.search
         .expression(`folder:${folderName}`)
         .max_results(10)
         .execute();
-      console.log("Images fetched successfully:", result);
       response.status(200).json(result);
     } catch (error) {
       console.error("Error fetching images:", error);

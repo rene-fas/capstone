@@ -32,7 +32,6 @@ export default async function handler(request, response, filepath) {
               public_id: newFilename,
               folder: folderName,
             });
-            console.log("API: response from cloudinary: ", result);
             response.status(201).json(result);
             resolve();
           }
