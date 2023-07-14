@@ -14,7 +14,7 @@ export default function ImageList() {
       const currentOutcropId = localStorage.getItem("currentOutcropId"); // needed to display the images from the current outcrop and fieldtrip
       try {
         const response = await fetch(
-          `/api/images?currentFieldTripId=${currentFieldTripId}&currentOutcropId=${currentOutcropId}`
+          `/api/images?currentFieldTripId=${currentFieldTripId}&currentOutcropId=${currentOutcropId}` // call api/images with query parameters
         );
         const data = await response.json();
         setData(data);
