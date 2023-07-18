@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR, { mutate } from "swr";
-
+import Image from "next/image";
 import "leaflet/dist/leaflet.css";
 import ExifReader from "exifreader";
-import Image from "next/image";
 
 function ImageUploadForm({ onUpload }) {
   const { mutate } = useSWR("/api/images/");
@@ -121,6 +120,7 @@ function ImageUploadForm({ onUpload }) {
 
     return null; // Return null if the coordinate format is not as expected
   }
+
   function handleFileChange(event) {
     const file = event.target.files[0];
     setSelectedFile(file);
