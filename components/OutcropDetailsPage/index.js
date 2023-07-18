@@ -159,7 +159,7 @@ const OutcropDetailsPage = () => {
             }
           </div>
         ))}
-        <LeafletMap />
+        <LeafletMap currentOutcrop={currentOutcrop} />
         <ImageList key={uploadedImagesCount} />
 
         <ImageUploadForm

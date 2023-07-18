@@ -2,7 +2,6 @@ import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-// Create a custom marker icon using the imported images
 const customMarkerIcon = L.icon({
   iconUrl: "/marker-icon.png",
   iconRetinaUrl: "/marker-icon.png",
@@ -13,18 +12,32 @@ const customMarkerIcon = L.icon({
   shadowAnchor: [12, 41],
 });
 
-const LeafletMap = () => {
+const LeafletMap = ({ currentOutcrop }) => {
+  // Check if the currentOutcrop object exists and contains the latitude and longitude properties
+  if (
+    !currentOutcrop ||
+    typeof currentOutcrop.latitude !== "number" ||
+    typeof currentOutcrop.longitude !== "number"
+  ) {
+    // If latitude or longitude is missing or invalid, you can choose to display a default map or a message.
+    // For now, we'll return null to render nothing.
+    return null;
+  }
+
+  // Get latitude and longitude from the currentOutcrop
+  const { latitude, longitude } = currentOutcrop;
+
   return (
     <MapContainer
-      center={[51.505, -0.09]} // center map to coordinates
-      zoom={13} // zoom level of the map
+      center={[latitude, longitude]}
+      zoom={13}
       style={{ height: "400px", width: "100%" }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors"
       />
-      <Marker position={[51.505, -0.09]} icon={customMarkerIcon} />
+      <Marker position={[latitude, longitude]} icon={customMarkerIcon} />
     </MapContainer>
   );
 };
