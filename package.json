@@ -15,6 +15,7 @@
     "cloudinary-react": "^1.8.1",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
+    "exifreader": "^4.13.0",
     "formidable": "^2.0.1",
     "leaflet": "^1.9.4",
     "next": "13.3.0",
