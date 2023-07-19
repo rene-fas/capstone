@@ -6,31 +6,31 @@ export const fieldtrips = [
     outcrops: [
       {
         id: 1,
-        name: "großer Stein",
+        name: "Tonschiefer Siegenstufe",
         details: [
           {
-            Gesteinsart: "Erde",
-            Gesteinsklasse: "groß",
-            Schichtung: "Schichtung details",
-            Faltung: "Faltung details",
-            Mineralien: "Mineralien details",
-            Allgemeines: "Allgemeines details",
-            Interpretation: "Interpretation details",
+            Gesteinsart: "Tonschiefer",
+            Gesteinsklasse: "Sedimentgestein",
+            Schichtung: "-",
+            Faltung: "-",
+            Mineralien: "-",
+            Allgemeines: "-",
+            Interpretation: "-",
           },
         ],
       },
       {
         id: 2,
-        name: "kleiner Stein",
+        name: "Richelsley",
         details: [
           {
-            Gesteinsart: "Stein",
-            Gesteinsklasse: "klein",
-            Schichtung: "Schichtung details",
-            Faltung: "Faltung details",
-            Mineralien: "Mineralien details",
-            Allgemeines: "Allgemeines details",
-            Interpretation: "Interpretation details",
+            Gesteinsart: "Konglomerat",
+            Gesteinsklasse: "Sedimentgestein",
+            Schichtung: "keine erkennbar",
+            Faltung: "-",
+            Mineralien: "-",
+            Allgemeines: "-",
+            Interpretation: "-",
           },
         ],
       },
@@ -38,7 +38,7 @@ export const fieldtrips = [
   },
   {
     id: 2,
-    fieldtripname: "Another Field Trip",
+    fieldtripname: "Taunus",
     fieldtripdate: "02.02.2002",
     outcrops: [
       {

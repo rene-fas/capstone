@@ -5,6 +5,7 @@ import Image from "next/image";
 import "leaflet/dist/leaflet.css";
 import ExifReader from "exifreader";
 import { Form, Preview, StyledButton } from "./ImageUploadForm.styled";
+import { PopupHeadline } from "../component.styled";
 
 function ImageUploadForm({ onUpload }) {
   const { mutate } = useSWR("/api/images/");
@@ -107,7 +108,7 @@ function ImageUploadForm({ onUpload }) {
 
   return (
     <>
-      <h2>Image Upload</h2>
+      <PopupHeadline>Image Upload</PopupHeadline>
       <Form onSubmit={submitImage}>
         <input type="file" name="file" required onChange={handleFileChange} />
         {selectedFile && (
