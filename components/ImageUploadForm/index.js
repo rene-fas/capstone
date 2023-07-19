@@ -4,6 +4,7 @@ import useSWR, { mutate } from "swr";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
 import ExifReader from "exifreader";
+import { Form, Preview, StyledButton } from "./ImageUploadForm.styled";
 
 function ImageUploadForm({ onUpload }) {
   const { mutate } = useSWR("/api/images/");
@@ -82,6 +83,9 @@ function ImageUploadForm({ onUpload }) {
             console.log("EXIF Data:", exifData);
           };
           reader.readAsArrayBuffer(file);
+        } else {
+          // Show the map message when latitude or longitude is null
+          setShowMapMessage(true);
         }
 
         setTimeout(() => {
@@ -152,21 +156,5 @@ function ImageUploadForm({ onUpload }) {
     </>
   );
 }
-
-const Form = styled.form`
-  margin: 2rem auto;
-`;
-
-const Preview = styled.div`
-  margin-top: 1rem;
-`;
-
-const StyledButton = styled.button`
-  background-color: green;
-  margin-top: 0.5rem;
-  border-radius: 0.5rem;
-  padding: 0.25rem 1rem;
-  color: white;
-`;
 
 export default ImageUploadForm;
