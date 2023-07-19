@@ -14,6 +14,8 @@ import {
   RemoveButton,
   CustomLink,
   EditButton,
+  StyledInput,
+  PopupHeadline,
 } from "../component.styled";
 
 const OutcropListPage = ({ fieldtripId }) => {
@@ -237,14 +239,18 @@ const OutcropListPage = ({ fieldtripId }) => {
         ))}
       </List>
       <ButtonGroup>
-        <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
         <Button onClick={handleBack}>Go Back</Button>
+        <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
       </ButtonGroup>
 
       {showPopup && (
         <Dialog>
-          {editingOutcropId ? <h2>Edit Outcrop</h2> : <h2>Add Outcrop</h2>}
-          <input
+          {editingOutcropId ? (
+            <PopupHeadline>Edit Outcrop</PopupHeadline>
+          ) : (
+            <PopupHeadline>Add Outcrop</PopupHeadline>
+          )}
+          <StyledInput
             type="text"
             value={editingOutcropId ? editedOutcropTitle : newOutcropTitle}
             onChange={(e) => {
@@ -256,12 +262,15 @@ const OutcropListPage = ({ fieldtripId }) => {
             }}
             placeholder="Outcrop Title"
           />
-          <Button onClick={handleCancelAddOutcrop}>Cancel</Button>
-          {editingOutcropId ? (
-            <Button onClick={handleSaveEditedOutcrop}>Save</Button>
-          ) : (
-            <Button onClick={handleAddOutcrop}>Add</Button>
-          )}
+          <ButtonGroup>
+            {" "}
+            <Button onClick={handleCancelAddOutcrop}>Cancel</Button>
+            {editingOutcropId ? (
+              <Button onClick={handleSaveEditedOutcrop}>Save</Button>
+            ) : (
+              <Button onClick={handleAddOutcrop}>Add</Button>
+            )}
+          </ButtonGroup>
         </Dialog>
       )}
     </Container>

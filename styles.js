@@ -9,6 +9,8 @@ export default createGlobalStyle`
 
   body {
     margin: 0;
-    font-family: system-ui;
+    background-color: gainsboro;
+    font-size: 18px;
+    font-family: Helvetica;
   }
 `;

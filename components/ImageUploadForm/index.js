@@ -40,11 +40,11 @@ function ImageUploadForm({ onUpload }) {
 
             // Extract GPS data from EXIF
             const latitude = exifData["GPSLatitude"]
-              ? getDegreesFromExifRational(exifData["GPSLatitude"].value)
+              ? exifData["GPSLatitude"].description
               : null;
             console.log("Latitude:", latitude);
             const longitude = exifData["GPSLongitude"]
-              ? getDegreesFromExifRational(exifData["GPSLongitude"].value)
+              ? exifData["GPSLongitude"].description
               : null;
             console.log("Longitude:", longitude);
             if (latitude !== null && longitude !== null) {
@@ -98,31 +98,6 @@ function ImageUploadForm({ onUpload }) {
     } catch (error) {
       setError(error);
     }
-  }
-
-  function getDegreesFromExifRational(rational) {
-    if (!rational || rational.length < 1) {
-      return null; // Return null if GPS data is missing or incomplete
-    }
-
-    // Check if the coordinate is an array of arrays in the format [[numerator, denominator], ...]
-    if (
-      Array.isArray(rational) &&
-      rational.length >= 1 &&
-      Array.isArray(rational[0]) &&
-      rational[0].length === 2
-    ) {
-      const degrees = rational[0][0];
-      const minutes = rational[1][0];
-      const seconds = rational[2][0];
-
-      // Convert degrees, minutes, and seconds to decimal degrees
-      const decimalDegrees = degrees + minutes / 60 + seconds / 3600;
-
-      return decimalDegrees;
-    }
-
-    return null; // Return null if the coordinate format is not as expected
   }
 
   function handleFileChange(event) {

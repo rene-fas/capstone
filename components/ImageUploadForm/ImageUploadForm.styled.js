@@ -8,9 +8,9 @@ export const Preview = styled.div`
 `;
 
 export const StyledButton = styled.button`
-  background-color: green;
+  background-color: #337ab7;
   margin-top: 0.5rem;
   border-radius: 0.5rem;
-  padding: 0.25rem 1rem;
+  padding: 0.55rem 1rem;
   color: white;
 `;
