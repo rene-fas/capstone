@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Image from "next/image";
 export const StyledTag = styled.span`
   background-color: #ddd;
   border-radius: 0.5rem;
