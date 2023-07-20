@@ -54,8 +54,12 @@ export const Header = styled.header`
   top: 0;
   left: 0;
   right: 0;
-  background-color: lightgray;
-  z-index: 1;
+  background: linear-gradient(to bottom, lightgray, gainsboro);
+  z-index: 9999;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 `;
 
 export const Dialog = styled.div`
