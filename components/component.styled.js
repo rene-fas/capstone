@@ -5,7 +5,7 @@ import Image from "next/image";
 export const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 10px;
   padding: 20px;
   padding-top: 100px;
   display: grid;
@@ -79,7 +79,7 @@ export const Dialog = styled.div`
 
 export const ButtonGroup = styled.div`
   display: flex;
-  align-items: center;
+  align-items: stretch, center;
   gap: 10px;
   width: 100%;
 `;
@@ -119,4 +119,8 @@ export const StyledBackButton = styled.button`
   margin-right: -15px;
   margin-bottom: 5px;
   padding: auto;
+`;
+
+export const StyledLinkButtonText = styled.p`
+  margin: 0;
 `;

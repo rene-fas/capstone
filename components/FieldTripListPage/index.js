@@ -16,6 +16,7 @@ import {
   EditButton,
   PopupHeadline,
   StyledInput,
+  StyledLinkButtonText,
 } from "../component.styled";
 import { fieldtrips as mockFieldtrips } from "../../db/mocked/index.js";
 import useLocalStorageState from "use-local-storage-state";
@@ -138,7 +139,12 @@ const FieldTripListPage = () => {
                 <LinkButton
                   onClick={() => handleFieldTripLinkClick(fieldtrip.id)}
                 >
-                  {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
+                  <StyledLinkButtonText>
+                    {fieldtrip.fieldtripname}
+                  </StyledLinkButtonText>
+                  <StyledLinkButtonText>
+                    {fieldtrip.fieldtripdate}
+                  </StyledLinkButtonText>
                 </LinkButton>
               </CustomLink>
               <RemoveButton onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
