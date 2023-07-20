@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Link from "next/link";
+import Image from "next/image";
 
 export const Container = styled.div`
   max-width: 600px;
@@ -17,7 +18,7 @@ export const Button = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #337ab7;
+  background-color: #006400;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -26,11 +27,8 @@ export const Button = styled.button`
 `;
 
 export const List = styled.ul`
-  margin-top: 5px;
   list-style-type: none;
-  padding: 2px;
-  border: 2px solid #337ab7;
-  border-radius: 4px;
+  padding: 0px;
 `;
 
 export const ListItem = styled.li`
@@ -42,6 +40,8 @@ export const ListItem = styled.li`
 
 export const Headline = styled.h2`
   text-align: center;
+  flex: 1;
+  font-size: 23px;
 `;
 
 export const PopupHeadline = styled.h3`
@@ -51,6 +51,9 @@ export const PopupHeadline = styled.h3`
 
 export const Header = styled.header`
   position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   top: 0;
   left: 0;
   right: 0;
@@ -100,4 +103,20 @@ export const EditButton = styled(Button)`
 
 export const StyledInput = styled.input`
   margin-bottom: 10px;
+`;
+
+export const StyledBack = styled(Image)`
+  width: 30px;
+  height: 30px;
+`;
+
+export const StyledBackButton = styled.button`
+  background: linear-gradient(to bottom, lightgray, gainsboro);
+  border: none;
+  height: 30px;
+  width: 30px;
+  margin-left: 15px;
+  margin-right: -15px;
+  margin-bottom: 5px;
+  padding: auto;
 `;

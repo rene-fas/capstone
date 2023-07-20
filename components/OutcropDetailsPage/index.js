@@ -3,7 +3,14 @@ import { capitalizeFirstLetter } from "../../helper/functions";
 import { useRouter } from "next/router";
 import { TextArea, Label } from "./OutcropDetailsPage.styled";
 
-import { Container, Headline, Header, Button } from "../component.styled";
+import {
+  Container,
+  Headline,
+  Header,
+  Button,
+  StyledBack,
+  StyledBackButton,
+} from "../component.styled";
 
 import ImageList from "../ImageList";
 import ImageUploadForm from "../ImageUploadForm";
@@ -141,6 +148,15 @@ const OutcropDetailsPage = () => {
   return (
     <>
       <Header>
+        <StyledBackButton onClick={handleBack}>
+          {" "}
+          <StyledBack
+            src="/back-arrow-svgrepo-com.svg"
+            alt="Back button"
+            width={1}
+            height={1}
+          />
+        </StyledBackButton>
         <Headline>{currentOutcrop ? currentOutcrop.name : ""}</Headline>
       </Header>
       <Container>
@@ -168,8 +184,6 @@ const OutcropDetailsPage = () => {
         <ImageUploadForm
           onUpload={() => setUploadedImagesCount((count) => count + 1)}
         />
-
-        <Button onClick={handleBack}>Go Back</Button>
       </Container>
     </>
   );

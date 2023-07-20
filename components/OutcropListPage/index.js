@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import {
   Container,
@@ -16,6 +16,8 @@ import {
   EditButton,
   StyledInput,
   PopupHeadline,
+  StyledBack,
+  StyledBackButton,
 } from "../component.styled";
 
 const OutcropListPage = ({ fieldtripId }) => {
@@ -212,6 +214,15 @@ const OutcropListPage = ({ fieldtripId }) => {
   return (
     <Container>
       <Header>
+        <StyledBackButton onClick={handleBack}>
+          {" "}
+          <StyledBack
+            src="/back-arrow-svgrepo-com.svg"
+            alt="Back button"
+            width={1}
+            height={1}
+          />
+        </StyledBackButton>
         <Headline>
           {parsedFieldtrip.fieldtripname} {parsedFieldtrip.fieldtripdate}
         </Headline>
@@ -239,7 +250,6 @@ const OutcropListPage = ({ fieldtripId }) => {
         ))}
       </List>
       <ButtonGroup>
-        <Button onClick={handleBack}>Go Back</Button>
         <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
       </ButtonGroup>
 
