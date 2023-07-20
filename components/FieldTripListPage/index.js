@@ -14,6 +14,8 @@ import {
   RemoveButton,
   CustomLink,
   EditButton,
+  PopupHeadline,
+  StyledInput,
 } from "../component.styled";
 import { fieldtrips as mockFieldtrips } from "../../db/mocked/index.js";
 import useLocalStorageState from "use-local-storage-state";
@@ -161,14 +163,14 @@ const FieldTripListPage = () => {
 
       {showAddPopup && !showEditPopup && (
         <Dialog>
-          <h2>Add Field Trip</h2>
-          <input
+          <PopupHeadline>Add Field Trip</PopupHeadline>
+          <StyledInput
             type="text"
             value={newFieldTripName}
             onChange={(e) => setNewFieldTripName(e.target.value)}
             placeholder="Field Trip Name"
           />
-          <input
+          <StyledInput
             type="date"
             value={newFieldTripDate}
             onChange={(e) => setNewFieldTripDate(e.target.value)}
@@ -183,14 +185,14 @@ const FieldTripListPage = () => {
 
       {showEditPopup && (
         <Dialog>
-          <h2>Edit Field Trip</h2>
-          <input
+          <PopupHeadline>Edit Field Trip</PopupHeadline>
+          <StyledInput
             type="text"
             value={editedFieldTripName}
             onChange={(event) => setEditedFieldTripName(event.target.value)}
             placeholder="Field Trip Name"
           />
-          <input
+          <StyledInput
             type="date"
             value={editedFieldTripDate}
             onChange={(event) => setEditedFieldTripDate(event.target.value)}

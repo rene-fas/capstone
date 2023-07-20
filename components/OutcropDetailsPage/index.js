@@ -8,6 +8,13 @@ import { Container, Headline, Header, Button } from "../component.styled";
 import ImageList from "../ImageList";
 import ImageUploadForm from "../ImageUploadForm";
 
+import dynamic from "next/dynamic";
+
+// Import Leaflet and react-leaflet components dynamically
+const LeafletMap = dynamic(() => import("../LeafletMap"), {
+  ssr: false, // Disable server-side rendering
+});
+
 const OutcropDetailsPage = () => {
   const [fieldTripId, setFieldTripId] = useState("");
   const [outcropId, setOutcropId] = useState("");
@@ -22,17 +29,17 @@ const OutcropDetailsPage = () => {
       const storedFieldTrips = getStoredFieldTrips();
       const currentFieldTripId = localStorage.getItem("currentFieldTripId");
       const currentOutcropId = localStorage.getItem("currentOutcropId");
-      setFieldTripId(currentFieldTripId); // set the fieldTripId we are working with from local storage
-      const outcropIdFromStorage = parseInt(currentOutcropId); // set the outcropId we are working with from local storage
+      setFieldTripId(currentFieldTripId);
+      const outcropIdFromStorage = parseInt(currentOutcropId);
       const currentFieldTrip = storedFieldTrips.find(
-        (fieldTrip) => fieldTrip.id === parseInt(currentFieldTripId) // find the field trip we are working with
+        (fieldTrip) => fieldTrip.id === parseInt(currentFieldTripId)
       );
 
       const outcrop =
         currentFieldTrip &&
         currentFieldTrip.outcrops &&
         currentFieldTrip.outcrops.find(
-          (outcrop) => outcrop.id === parseInt(currentOutcropId) // find the outcrop we are working with
+          (outcrop) => outcrop.id === parseInt(currentOutcropId)
         );
 
       setCurrentOutcrop(outcrop);
@@ -55,7 +62,7 @@ const OutcropDetailsPage = () => {
         error
       );
     }
-  }, []);
+  }, [uploadedImagesCount]); // Update currentOutcrop whenever uploadedImagesCount changes
 
   const handleBack = () => {
     router.back();
@@ -152,6 +159,10 @@ const OutcropDetailsPage = () => {
             }
           </div>
         ))}
+        <LeafletMap
+          currentOutcrop={currentOutcrop}
+          uploadedImagesCount={uploadedImagesCount}
+        />
         <ImageList key={uploadedImagesCount} />
 
         <ImageUploadForm

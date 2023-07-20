@@ -3,6 +3,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import Link from "next/link";
 import useSWR, { mutate } from "swr";
+import { StyledList, StyledListItem, StyledImage } from "./ImageList.styled";
 
 export default function ImageList() {
   const [data, setData] = useState(null);
@@ -14,7 +15,7 @@ export default function ImageList() {
       const currentOutcropId = localStorage.getItem("currentOutcropId"); // needed to display the images from the current outcrop and fieldtrip
       try {
         const response = await fetch(
-          `/api/images?currentFieldTripId=${currentFieldTripId}&currentOutcropId=${currentOutcropId}`
+          `/api/images?currentFieldTripId=${currentFieldTripId}&currentOutcropId=${currentOutcropId}` // call api/images with query parameters
         );
         const data = await response.json();
         setData(data);
@@ -46,24 +47,3 @@ export default function ImageList() {
     </StyledList>
   );
 }
-
-export const StyledTag = styled.span`
-  background-color: #ddd;
-  border-radius: 0.5rem;
-  padding: 0.25rem 0.5rem;
-`;
-
-const StyledList = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const StyledListItem = styled.li`
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #ccc;
-`;
-
-const StyledImage = styled(Image)`
-  border-radius: 0.5rem;
-  border-color: aliceblue;
-`;

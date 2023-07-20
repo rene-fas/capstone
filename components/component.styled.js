@@ -10,6 +10,7 @@ export const Container = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
   align-items: center;
+  background-color: gainsboro;
 `;
 
 export const Button = styled.button`
@@ -28,7 +29,7 @@ export const List = styled.ul`
   margin-top: 5px;
   list-style-type: none;
   padding: 2px;
-  border: 1px solid #ccc;
+  border: 2px solid #337ab7;
   border-radius: 4px;
 `;
 
@@ -43,12 +44,17 @@ export const Headline = styled.h2`
   text-align: center;
 `;
 
+export const PopupHeadline = styled.h3`
+  font-size: 16px;
+  text-align: center;
+`;
+
 export const Header = styled.header`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background-color: #fff;
+  background-color: lightgray;
   z-index: 1;
 `;
 
@@ -58,7 +64,7 @@ export const Dialog = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   border: solid black;
-  background-color: #fff;
+  background-color: lightgray;
   padding: 20px;
   border-radius: 4px;
   z-index: 2;
@@ -86,4 +92,8 @@ export const CustomLink = styled(Link)`
 
 export const EditButton = styled(Button)`
   flex-basis: 12.5%;
+`;
+
+export const StyledInput = styled.input`
+  margin-bottom: 10px;
 `;
