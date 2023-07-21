@@ -23,7 +23,7 @@ import {
 } from "../component.styled";
 
 // Import Leaflet and react-leaflet components dynamically
-const OutcropListMap = dynamic(() => import("../LeafletMap"), {
+const OutcropListMap = dynamic(() => import("../OutcropListMap"), {
   ssr: false, // Disable server-side rendering
 });
 const OutcropListPage = ({ fieldtripId }) => {
