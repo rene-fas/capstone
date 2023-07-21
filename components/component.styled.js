@@ -40,12 +40,6 @@ export const ListItem = styled.li`
   margin-bottom: 20px;
 `;
 
-export const Headline = styled.h2`
-  text-align: center;
-  flex: 1;
-  font-size: 23px;
-`;
-
 export const PopupHeadline = styled.h3`
   font-size: 16px;
   text-align: center;
@@ -53,9 +47,9 @@ export const PopupHeadline = styled.h3`
 
 export const Header = styled.header`
   position: fixed;
-  display: flex;
   align-items: center;
   gap: 10px;
+  min-height: 65px;
   top: 0;
   left: 0;
   right: 0;
@@ -66,6 +60,15 @@ export const Header = styled.header`
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 `;
+
+export const Headline = styled.h2`
+  text-align: center;
+  flex: 1;
+  font-size: 20px;
+  margin: 10px 0px 5px 0px;
+`;
+
+export const HeaderContainer = styled.div``;
 
 export const Dialog = styled.div`
   position: fixed;
@@ -115,18 +118,20 @@ export const StyledInput = styled.input`
 export const StyledBack = styled(Image)`
   width: 30px;
   height: 30px;
+  z-index: 10000;
 `;
 
 export const StyledBackButton = styled.button`
+  position: fixed;
+  left: 5px;
+  top: 15px;
   background: linear-gradient(to bottom, lightgray, gainsboro);
   border: none;
   height: 30px;
   width: 30px;
-  margin-left: 15px;
-  margin-right: -15px;
-  margin-bottom: 5px;
   padding: auto;
   cursor: pointer;
+  z-index: 10000;
 `;
 
 export const StyledLinkButtonText = styled.p`
@@ -138,4 +143,11 @@ export const StyledLinkButtonDate = styled.p`
   margin: 0px;
   margin-top: 5px;
   color: darkslategrey;
+`;
+
+export const StyledSubHeaderDate = styled.h3`
+  text-align: center;
+  font-size: 16px;
+  color: darkslategrey;
+  margin: 0 0 5px 0;
 `;

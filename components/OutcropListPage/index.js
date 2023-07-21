@@ -18,6 +18,8 @@ import {
   PopupHeadline,
   StyledBack,
   StyledBackButton,
+  HeaderContainer,
+  StyledSubHeaderDate,
 } from "../component.styled";
 
 const OutcropListPage = ({ fieldtripId }) => {
@@ -214,19 +216,19 @@ const OutcropListPage = ({ fieldtripId }) => {
 
   return (
     <Container>
+      <StyledBackButton onClick={handleBack}>
+        <StyledBack
+          src="/back-arrow-svgrepo-com.svg"
+          alt="Back button"
+          width={30}
+          height={30}
+        />
+      </StyledBackButton>
       <Header>
-        <StyledBackButton onClick={handleBack}>
-          {" "}
-          <StyledBack
-            src="/back-arrow-svgrepo-com.svg"
-            alt="Back button"
-            width={30}
-            height={30}
-          />
-        </StyledBackButton>
-        <Headline>
-          {parsedFieldtrip.fieldtripname} {parsedFieldtrip.fieldtripdate}
-        </Headline>
+        <Headline>{parsedFieldtrip.fieldtripname}</Headline>
+        <StyledSubHeaderDate>
+          {parsedFieldtrip.fieldtripdate}
+        </StyledSubHeaderDate>
       </Header>
       <List>
         {parsedFieldtrip.outcrops.map((outcrop) => (
@@ -251,7 +253,6 @@ const OutcropListPage = ({ fieldtripId }) => {
         ))}
       </List>
       <ButtonGroup>
-        <Button onClick={handleBack}>Go Back</Button>
         <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
       </ButtonGroup>
 
