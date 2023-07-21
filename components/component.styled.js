@@ -18,7 +18,7 @@ export const Button = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: none;
+  background-color: whitesmoke;
   color: black;
   border: none;
   border-radius: 4px;
@@ -77,7 +77,8 @@ export const Dialog = styled.div`
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   background-color: lightgray;
-  padding: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
   border-radius: 4px;
   z-index: 2;
 `;
@@ -108,7 +109,7 @@ export const EditButton = styled(Button)`
 
 export const StyledInput = styled.input`
   margin-bottom: 10px;
-  margin-left: 1px;
+  width: 100%;
 `;
 
 export const StyledBack = styled(Image)`
@@ -130,4 +131,11 @@ export const StyledBackButton = styled.button`
 
 export const StyledLinkButtonText = styled.p`
   margin: 0;
+  font-weight: bold;
+`;
+
+export const StyledLinkButtonDate = styled.p`
+  margin: 0px;
+  margin-top: 5px;
+  color: darkslategrey;
 `;

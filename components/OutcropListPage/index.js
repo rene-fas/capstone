@@ -97,6 +97,7 @@ const OutcropListPage = ({ fieldtripId }) => {
   const handleCancelAddOutcrop = () => {
     //close popup on clicking cancel button
     setNewOutcropTitle("");
+    setEditingOutcropId(null); // Reset the editingOutcropId back to null
     setShowPopup(false);
   };
 
@@ -194,7 +195,7 @@ const OutcropListPage = ({ fieldtripId }) => {
           }));
         }
 
-        setEditingOutcropId(null);
+        setEditingOutcropId(null); // Reset the editingOutcropId back to null
         setEditedOutcropTitle("");
         setShowPopup(false);
       } catch (error) {
@@ -219,8 +220,8 @@ const OutcropListPage = ({ fieldtripId }) => {
           <StyledBack
             src="/back-arrow-svgrepo-com.svg"
             alt="Back button"
-            width={1}
-            height={1}
+            width={30}
+            height={30}
           />
         </StyledBackButton>
         <Headline>
@@ -250,6 +251,7 @@ const OutcropListPage = ({ fieldtripId }) => {
         ))}
       </List>
       <ButtonGroup>
+        <Button onClick={handleBack}>Go Back</Button>
         <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
       </ButtonGroup>
 

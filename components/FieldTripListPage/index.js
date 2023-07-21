@@ -17,6 +17,7 @@ import {
   PopupHeadline,
   StyledInput,
   StyledLinkButtonText,
+  StyledLinkButtonDate,
 } from "../component.styled";
 
 import useLocalStorageState from "use-local-storage-state";
@@ -153,9 +154,9 @@ const FieldTripListPage = () => {
                     <StyledLinkButtonText>
                       {fieldtrip.fieldtripname}
                     </StyledLinkButtonText>
-                    <StyledLinkButtonText>
+                    <StyledLinkButtonDate>
                       {fieldtrip.fieldtripdate}
-                    </StyledLinkButtonText>
+                    </StyledLinkButtonDate>
                   </LinkButton>
                 </CustomLink>
                 <RemoveButton
@@ -192,7 +193,7 @@ const FieldTripListPage = () => {
             type="text"
             value={newFieldTripName}
             onChange={(event) => setNewFieldTripName(event.target.value)}
-            placeholder="Field Trip Name"
+            placeholder="z.B. Eifel"
           />
           <StyledInput
             type="date"
