@@ -29,13 +29,15 @@ export const Button = styled.button`
 export const List = styled.ul`
   list-style-type: none;
   padding: 0px;
+  margin: 0px;
 `;
 
 export const ListItem = styled.li`
-  padding: 10px;
+  padding: 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
 `;
 
 export const Headline = styled.h2`

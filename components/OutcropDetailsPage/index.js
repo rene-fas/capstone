@@ -7,7 +7,6 @@ import {
   Container,
   Headline,
   Header,
-  Button,
   StyledBack,
   StyledBackButton,
 } from "../component.styled";
@@ -113,6 +112,7 @@ const OutcropDetailsPage = () => {
   };
 
   const saveEditedDataToLocalStorage = () => {
+    // Save changes in the edited textfield to local storage
     try {
       const storedFieldTrips = getStoredFieldTrips();
       const updatedFieldTrips = storedFieldTrips.map((fieldTrip) => {
@@ -149,7 +149,6 @@ const OutcropDetailsPage = () => {
     <>
       <Header>
         <StyledBackButton onClick={handleBack}>
-          {" "}
           <StyledBack
             src="/back-arrow-svgrepo-com.svg"
             alt="Back button"
