@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import {
   Container,
@@ -21,6 +20,8 @@ import {
   HeaderContainer,
   StyledSubHeaderDate,
 } from "../component.styled";
+
+import OutcropListMap from "../OutcropListMap";
 
 const OutcropListPage = ({ fieldtripId }) => {
   const router = useRouter();
@@ -214,6 +215,11 @@ const OutcropListPage = ({ fieldtripId }) => {
     localStorage.setItem("currentOutcropId", outcropId); // Set current outcrop id for navigation
   };
 
+  const outcropLatLngs = parsedFieldtrip.outcrops.map((outcrop) => ({
+    latitude: outcrop.latitude, // Replace 'latitude' with the actual property name that stores the latitude for each outcrop
+    longitude: outcrop.longitude, // Replace 'longitude' with the actual property name that stores the longitude for each outcrop
+  }));
+
   return (
     <Container>
       <StyledBackButton onClick={handleBack}>
@@ -255,6 +261,7 @@ const OutcropListPage = ({ fieldtripId }) => {
       <ButtonGroup>
         <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
       </ButtonGroup>
+      <OutcropListMap outcropLatLngs={outcropLatLngs} />
 
       {showPopup && (
         <Dialog>
