@@ -21,8 +21,10 @@ import {
   StyledSubHeaderDate,
 } from "../component.styled";
 
-import OutcropListMap from "../OutcropListMap";
-
+// Import Leaflet and react-leaflet components dynamically
+const OutcropListMap = dynamic(() => import("../LeafletMap"), {
+  ssr: false, // Disable server-side rendering
+});
 const OutcropListPage = ({ fieldtripId }) => {
   const router = useRouter();
   const [parsedFieldtrip, setParsedFieldtrip] = useState(null);
