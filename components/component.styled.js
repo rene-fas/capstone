@@ -72,7 +72,10 @@ export const Dialog = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: solid black;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   background-color: lightgray;
   padding: 20px;
   border-radius: 4px;
@@ -105,6 +108,7 @@ export const EditButton = styled(Button)`
 
 export const StyledInput = styled.input`
   margin-bottom: 10px;
+  margin-left: 1px;
 `;
 
 export const StyledBack = styled(Image)`
