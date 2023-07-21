@@ -83,7 +83,7 @@ export const Dialog = styled.div`
   padding-right: 10px;
   padding-left: 10px;
   border-radius: 4px;
-  z-index: 2;
+  z-index: 10000;
 `;
 
 export const ButtonGroup = styled.div`
