@@ -26,17 +26,14 @@ const OutcropListMap = ({ outcropLatLngs }) => {
     return <p>No valid coordinates available.</p>;
   }
 
-  // Calculate the average latitude and longitude values
-  const avgLatitude =
-    validLatLngs.reduce((sum, latLng) => sum + latLng.latitude, 0) /
-    validLatLngs.length;
-  const avgLongitude =
-    validLatLngs.reduce((sum, latLng) => sum + latLng.longitude, 0) /
-    validLatLngs.length;
+  // Calculate the bounds based on the outcropLatLngs array
+  const bounds = validLatLngs.reduce((acc, latLng) => {
+    return acc.extend([latLng.latitude, latLng.longitude]);
+  }, L.latLngBounds(validLatLngs[0].latitude, validLatLngs[0].longitude));
 
   return (
     <MapContainer
-      center={[avgLatitude, avgLongitude]} // Set the center based on average latitude and longitude
+      center={[bounds.getCenter().lat, bounds.getCenter().lng]} // Center the map based on the calculated bounds
       zoom={13} // Set the default zoom level, adjust as needed
       style={{ height: "400px", width: "100%" }} // Set the map container's style
     >
