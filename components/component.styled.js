@@ -18,8 +18,8 @@ export const Button = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #006400;
-  color: #fff;
+  background-color: none;
+  color: black;
   border: none;
   border-radius: 4px;
   margin-bottom: 10px;
@@ -121,6 +121,7 @@ export const StyledBackButton = styled.button`
   margin-right: -15px;
   margin-bottom: 5px;
   padding: auto;
+  cursor: pointer;
 `;
 
 export const StyledLinkButtonText = styled.p`
