@@ -34,7 +34,7 @@ const OutcropListMap = ({ outcropLatLngs }) => {
   return (
     <MapContainer
       center={[bounds.getCenter().lat, bounds.getCenter().lng]} // Center the map based on the calculated bounds
-      zoom={13} // Set the default zoom level, adjust as needed
+      zoom={12} // Set the default zoom level, adjust as needed
       style={{ height: "400px", width: "100%" }} // Set the map container's style
     >
       <TileLayer

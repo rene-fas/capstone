@@ -262,7 +262,9 @@ const OutcropListPage = ({ fieldtripId }) => {
         ))}
       </List>
       <ButtonGroup>
-        <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
+        <Button onClick={() => setShowPopup(true)}>
+          Aufschluss hinzufügen
+        </Button>
       </ButtonGroup>
       <OutcropListMap outcropLatLngs={outcropLatLngs} />
 
@@ -271,7 +273,7 @@ const OutcropListPage = ({ fieldtripId }) => {
           {editingOutcropId ? (
             <PopupHeadline>Edit Outcrop</PopupHeadline>
           ) : (
-            <PopupHeadline>Add Outcrop</PopupHeadline>
+            <PopupHeadline>Aufschluss hinzufügen</PopupHeadline>
           )}
           <StyledInput
             type="text"
