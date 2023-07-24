@@ -43,27 +43,22 @@ function ImageUploadForm({ onUpload }) {
             const latitude = exifData["GPSLatitude"]
               ? exifData["GPSLatitude"].description
               : null;
-            console.log("Latitude:", latitude);
             const longitude = exifData["GPSLongitude"]
               ? exifData["GPSLongitude"].description
               : null;
-            console.log("Longitude:", longitude);
             if (latitude !== null && longitude !== null) {
               // Save latitude and longitude in localStorage
               const fieldTrips = JSON.parse(localStorage.getItem("fieldTrips"));
-              console.log("FieldTrips:", fieldTrips);
               if (fieldTrips) {
                 const fieldTripIndex = fieldTrips.findIndex(
                   (trip) => trip.id === parseInt(currentFieldTripId, 10)
                 );
-                console.log("FieldTripIndex:", fieldTripIndex);
                 if (fieldTripIndex !== -1) {
                   const outcropIndex = fieldTrips[
                     fieldTripIndex
                   ].outcrops.findIndex(
                     (o) => o.id === parseInt(currentOutcropId, 10)
                   );
-                  console.log("OutcropIndex:", outcropIndex);
                   if (outcropIndex !== -1) {
                     // Update the latitude and longitude of the corresponding outcrop
                     fieldTrips[fieldTripIndex].outcrops[outcropIndex].latitude =
@@ -73,22 +68,18 @@ function ImageUploadForm({ onUpload }) {
                     ].longitude = longitude;
                   }
                 }
-                console.log("FieldTrips:", fieldTrips);
                 localStorage.setItem("fieldTrips", JSON.stringify(fieldTrips));
               }
             } else {
               // Show the map message when latitude or longitude is null
               setShowMapMessage(true);
             }
-
-            console.log("EXIF Data:", exifData);
           };
           reader.readAsArrayBuffer(file);
         } else {
           // Show the map message when latitude or longitude is null
           setShowMapMessage(true);
         }
-
         setTimeout(() => {
           setUploadStatus("Upload complete!");
           setSelectedFile(null); // Clear the selected file
