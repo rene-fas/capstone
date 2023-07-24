@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-import Image from "next/image";
-import styled from "styled-components";
 import Link from "next/link";
-import useSWR, { mutate } from "swr";
 import { StyledList, StyledListItem, StyledImage } from "./ImageList.styled";
 
 export default function ImageList() {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import {
   Container,
   Headline,
@@ -16,8 +16,16 @@ import {
   EditButton,
   StyledInput,
   PopupHeadline,
+  StyledBack,
+  StyledBackButton,
+  HeaderContainer,
+  StyledSubHeaderDate,
 } from "../component.styled";
 
+// Import Leaflet and react-leaflet components dynamically
+const OutcropListMap = dynamic(() => import("../OutcropListMap"), {
+  ssr: false, // Disable server-side rendering
+});
 const OutcropListPage = ({ fieldtripId }) => {
   const router = useRouter();
   const [parsedFieldtrip, setParsedFieldtrip] = useState(null);
@@ -95,6 +103,7 @@ const OutcropListPage = ({ fieldtripId }) => {
   const handleCancelAddOutcrop = () => {
     //close popup on clicking cancel button
     setNewOutcropTitle("");
+    setEditingOutcropId(null); // Reset the editingOutcropId back to null
     setShowPopup(false);
   };
 
@@ -192,7 +201,7 @@ const OutcropListPage = ({ fieldtripId }) => {
           }));
         }
 
-        setEditingOutcropId(null);
+        setEditingOutcropId(null); // Reset the editingOutcropId back to null
         setEditedOutcropTitle("");
         setShowPopup(false);
       } catch (error) {
@@ -209,12 +218,26 @@ const OutcropListPage = ({ fieldtripId }) => {
     localStorage.setItem("currentOutcropId", outcropId); // Set current outcrop id for navigation
   };
 
+  const outcropLatLngs = parsedFieldtrip.outcrops.map((outcrop) => ({
+    latitude: outcrop.latitude, // Replace 'latitude' with the actual property name that stores the latitude for each outcrop
+    longitude: outcrop.longitude, // Replace 'longitude' with the actual property name that stores the longitude for each outcrop
+  }));
+
   return (
     <Container>
+      <StyledBackButton onClick={handleBack}>
+        <StyledBack
+          src="/back-arrow-svgrepo-com.svg"
+          alt="Back button"
+          width={30}
+          height={30}
+        />
+      </StyledBackButton>
       <Header>
-        <Headline>
-          {parsedFieldtrip.fieldtripname} {parsedFieldtrip.fieldtripdate}
-        </Headline>
+        <Headline>{parsedFieldtrip.fieldtripname}</Headline>
+        <StyledSubHeaderDate>
+          {parsedFieldtrip.fieldtripdate}
+        </StyledSubHeaderDate>
       </Header>
       <List>
         {parsedFieldtrip.outcrops.map((outcrop) => (
@@ -239,16 +262,18 @@ const OutcropListPage = ({ fieldtripId }) => {
         ))}
       </List>
       <ButtonGroup>
-        <Button onClick={handleBack}>Go Back</Button>
-        <Button onClick={() => setShowPopup(true)}>Add Outcrop</Button>
+        <Button onClick={() => setShowPopup(true)}>
+          Aufschluss hinzufügen
+        </Button>
       </ButtonGroup>
+      <OutcropListMap outcropLatLngs={outcropLatLngs} />
 
       {showPopup && (
         <Dialog>
           {editingOutcropId ? (
             <PopupHeadline>Edit Outcrop</PopupHeadline>
           ) : (
-            <PopupHeadline>Add Outcrop</PopupHeadline>
+            <PopupHeadline>Aufschluss hinzufügen</PopupHeadline>
           )}
           <StyledInput
             type="text"

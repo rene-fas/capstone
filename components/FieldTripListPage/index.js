@@ -16,9 +16,21 @@ import {
   EditButton,
   PopupHeadline,
   StyledInput,
+  StyledLinkButtonText,
+  StyledLinkButtonDate,
 } from "../component.styled";
-import { fieldtrips as mockFieldtrips } from "../../db/mocked/index.js";
+
 import useLocalStorageState from "use-local-storage-state";
+// Conditionally import the mock data
+let mockFieldtrips = null;
+
+// Check if the mock data file exists
+const hasMockData = process.env.NODE_ENV === "development";
+if (hasMockData) {
+  import("../../db/mocked/index.js").then((module) => {
+    mockFieldtrips = module.fieldtrips;
+  });
+}
 
 const FieldTripListPage = () => {
   const router = useRouter();
@@ -27,7 +39,7 @@ const FieldTripListPage = () => {
   const [newFieldTripName, setNewFieldTripName] = useState("");
   const [newFieldTripDate, setNewFieldTripDate] = useState("");
   const [fieldtrips, setFieldtrips] = useLocalStorageState("fieldTrips", {
-    defaultValue: mockFieldtrips,
+    defaultValue: mockFieldtrips || [], // Use mockFieldtrips if it exists, otherwise fallback to an empty array
   });
 
   const [editingFieldTripId, setEditingFieldTripId] = useState(null);
@@ -128,52 +140,65 @@ const FieldTripListPage = () => {
   return (
     <Container>
       <Header>
-        <Headline>Field Trip List</Headline>
+        <Headline>Exkursionsliste</Headline>
       </Header>
-      <List>
-        {fieldtrips.map((fieldtrip) => (
-          <ListItem key={fieldtrip.id}>
-            <ButtonGroup>
-              <CustomLink href={`/outcroplist/${fieldtrip.id}`} passHref>
-                <LinkButton
-                  onClick={() => handleFieldTripLinkClick(fieldtrip.id)}
+      {fieldtrips.length > 0 ? (
+        <List>
+          {fieldtrips.map((fieldtrip) => (
+            <ListItem key={fieldtrip.id}>
+              <ButtonGroup>
+                <CustomLink href={`/outcroplist/${fieldtrip.id}`} passHref>
+                  <LinkButton
+                    onClick={() => handleFieldTripLinkClick(fieldtrip.id)}
+                  >
+                    <StyledLinkButtonText>
+                      {fieldtrip.fieldtripname}
+                    </StyledLinkButtonText>
+                    <StyledLinkButtonDate>
+                      {fieldtrip.fieldtripdate}
+                    </StyledLinkButtonDate>
+                  </LinkButton>
+                </CustomLink>
+                <RemoveButton
+                  onClick={() => handleDeleteFieldTrip(fieldtrip.id)}
                 >
-                  {fieldtrip.fieldtripname} {fieldtrip.fieldtripdate}
-                </LinkButton>
-              </CustomLink>
-              <RemoveButton onClick={() => handleDeleteFieldTrip(fieldtrip.id)}>
-                -
-              </RemoveButton>
-              <EditButton
-                onClick={() => {
-                  setEditingFieldTripId(fieldtrip.id);
-                  setEditedFieldTripName(fieldtrip.fieldtripname);
-                  setEditedFieldTripDate(fieldtrip.fieldtripdate);
-                  setShowEditPopup(true);
-                }}
-                disabled={editingFieldTripId !== null}
-              >
-                Edit
-              </EditButton>
-            </ButtonGroup>
-          </ListItem>
-        ))}
-      </List>
-      <Button onClick={() => setShowAddPopup(true)}>Add Field Trip</Button>
+                  -
+                </RemoveButton>
+                <EditButton
+                  onClick={() => {
+                    setEditingFieldTripId(fieldtrip.id);
+                    setEditedFieldTripName(fieldtrip.fieldtripname);
+                    setEditedFieldTripDate(fieldtrip.fieldtripdate);
+                    setShowEditPopup(true);
+                  }}
+                  disabled={editingFieldTripId !== null}
+                >
+                  Edit
+                </EditButton>
+              </ButtonGroup>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <></>
+      )}
+      <Button onClick={() => setShowAddPopup(true)}>
+        Exkursion hinzufügen
+      </Button>
 
       {showAddPopup && !showEditPopup && (
         <Dialog>
-          <PopupHeadline>Add Field Trip</PopupHeadline>
+          <PopupHeadline>Exkursion hinzufügen</PopupHeadline>
           <StyledInput
             type="text"
             value={newFieldTripName}
-            onChange={(e) => setNewFieldTripName(e.target.value)}
-            placeholder="Field Trip Name"
+            onChange={(event) => setNewFieldTripName(event.target.value)}
+            placeholder="z.B. Eifel"
           />
           <StyledInput
             type="date"
             value={newFieldTripDate}
-            onChange={(e) => setNewFieldTripDate(e.target.value)}
+            onChange={(event) => setNewFieldTripDate(event.target.value)}
             placeholder="Select a date"
           />
           <ButtonGroup>
@@ -185,7 +210,7 @@ const FieldTripListPage = () => {
 
       {showEditPopup && (
         <Dialog>
-          <PopupHeadline>Edit Field Trip</PopupHeadline>
+          <PopupHeadline>Exkursion bearbeiten</PopupHeadline>
           <StyledInput
             type="text"
             value={editedFieldTripName}
@@ -199,8 +224,8 @@ const FieldTripListPage = () => {
             placeholder="Select a date"
           />
           <ButtonGroup>
-            <Button onClick={handleCancelEditFieldTrip}>Cancel</Button>
-            <Button onClick={handleUpdateFieldTrip}>Update</Button>
+            <Button onClick={handleCancelEditFieldTrip}>Abbrechen</Button>
+            <Button onClick={handleUpdateFieldTrip}>Bearbeiten</Button>
           </ButtonGroup>
         </Dialog>
       )}

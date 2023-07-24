@@ -5,12 +5,13 @@ export default createGlobalStyle`
   *::before,
   *::after {
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
   }
 
   body {
     margin: 0;
     background-color: gainsboro;
     font-size: 18px;
-    font-family: Helvetica;
+    
   }
 `;

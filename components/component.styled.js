@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import Link from "next/link";
+import Image from "next/image";
 
 export const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 10px;
   padding: 20px;
   padding-top: 100px;
   display: grid;
@@ -17,8 +18,8 @@ export const Button = styled.button`
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #337ab7;
-  color: #fff;
+  background-color: whitesmoke;
+  color: black;
   border: none;
   border-radius: 4px;
   margin-bottom: 10px;
@@ -26,22 +27,17 @@ export const Button = styled.button`
 `;
 
 export const List = styled.ul`
-  margin-top: 5px;
   list-style-type: none;
-  padding: 2px;
-  border: 2px solid #337ab7;
-  border-radius: 4px;
+  padding: 0px;
+  margin: 0px;
 `;
 
 export const ListItem = styled.li`
-  padding: 10px;
+  padding: 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-export const Headline = styled.h2`
-  text-align: center;
+  margin-bottom: 20px;
 `;
 
 export const PopupHeadline = styled.h3`
@@ -51,28 +47,48 @@ export const PopupHeadline = styled.h3`
 
 export const Header = styled.header`
   position: fixed;
+  align-items: center;
+  gap: 10px;
+  min-height: 65px;
   top: 0;
   left: 0;
   right: 0;
-  background-color: lightgray;
-  z-index: 1;
+  background: linear-gradient(to bottom, lightgray, gainsboro);
+  z-index: 9999;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 `;
+
+export const Headline = styled.h2`
+  text-align: center;
+  flex: 1;
+  font-size: 20px;
+  margin: 10px 0px 5px 0px;
+`;
+
+export const HeaderContainer = styled.div``;
 
 export const Dialog = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: solid black;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   background-color: lightgray;
-  padding: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
   border-radius: 4px;
-  z-index: 2;
+  z-index: 10000;
 `;
 
 export const ButtonGroup = styled.div`
   display: flex;
-  align-items: center;
+  align-items: stretch, center;
   gap: 10px;
   width: 100%;
 `;
@@ -96,4 +112,42 @@ export const EditButton = styled(Button)`
 
 export const StyledInput = styled.input`
   margin-bottom: 10px;
+  width: 100%;
+`;
+
+export const StyledBack = styled(Image)`
+  width: 30px;
+  height: 30px;
+  z-index: 10000;
+`;
+
+export const StyledBackButton = styled.button`
+  position: fixed;
+  left: 5px;
+  top: 15px;
+  background: linear-gradient(to bottom, lightgray, gainsboro);
+  border: none;
+  height: 30px;
+  width: 30px;
+  padding: auto;
+  cursor: pointer;
+  z-index: 10000;
+`;
+
+export const StyledLinkButtonText = styled.p`
+  margin: 0;
+  font-weight: bold;
+`;
+
+export const StyledLinkButtonDate = styled.p`
+  margin: 0px;
+  margin-top: 5px;
+  color: darkslategrey;
+`;
+
+export const StyledSubHeaderDate = styled.h3`
+  text-align: center;
+  font-size: 16px;
+  color: darkslategrey;
+  margin: 0 0 5px 0;
 `;

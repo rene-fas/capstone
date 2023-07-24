@@ -13,7 +13,11 @@ const customMarkerIcon = L.icon({
   shadowAnchor: [12, 41],
 });
 
-const LeafletMap = ({ currentOutcrop, uploadedImagesCount }) => {
+const LeafletMap = ({
+  currentOutcrop,
+  uploadedImagesCount,
+  outcropLatLngs,
+}) => {
   const [mapKey, setMapKey] = useState(0); // Add a state variable for map key
 
   useEffect(() => {
