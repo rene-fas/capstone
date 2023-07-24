@@ -1,8 +1,12 @@
-# New Project
+## Geobud
 
-This project was created from the neue fische next template.
+This app was developed during my 4 week long capstonephase for the neue fische bootcamp in june / july 2023.
+It should assist geoscience students in taking notes during fieldtrips so they can create good field reports afterwards.
 
-## Development
+## Preview
+
+![Preview Outcroplist](public/previewOutcropList.jpg)
+[Preview Video App](public/preview.mov)
 
 ### CodeSandbox
 
