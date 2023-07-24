@@ -5,8 +5,6 @@ It should assist geoscience students in taking notes during fieldtrips so they c
 
 ## Preview
 
-![Preview Outcroplist](public/previewOutcropList.jpg)
-[Preview Video App](public/preview.mov)
 
 ### CodeSandbox
 
